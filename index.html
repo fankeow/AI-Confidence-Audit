@@ -1,0 +1,2601 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The AI Confidence Audit — DannyBunny</title>
+<meta name="description" content="A 4-minute diagnostic for the AI-curious, the AI-cautious, and the AI-chaotic. Find your archetype and your one shift.">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,300;1,9..144,400;1,9..144,500;1,9..144,600&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    /* Background tones */
+    --bg: #F7F2E8;
+    --bg-soft: #EFE8D6;
+    --bg-card: #FCF8EE;
+    --bg-inset: #F0EAD9;
+    --bg-violet: #ECE5F0;
+    --bg-dark: #1A1A12;
+
+    /* Text */
+    --ink: #1A1A12;
+    --ink-soft: #2F2E22;
+    --body: #4A483A;
+    --mid: #807D6E;
+    --light: #B5B1A0;
+
+    /* Borders */
+    --border: #E2DCC9;
+    --border-strong: #C8C2AD;
+
+    /* Brand: gold + sage green */
+    --gold: #B8893A;
+    --gold-mid: #A87A2C;
+    --gold-dk: #7A5A20;
+    --gold-pale: #F4E8C9;
+    --gold-pale-soft: #FAF1D9;
+
+    --green: #3F5A3D;
+    --green-mid: #344A33;
+    --green-dk: #243520;
+    --green-pale: #E0E5DC;
+    --green-pale-soft: #EDF0E8;
+
+    --plum: #6B2B3D;
+
+    --shadow-card: 0 1px 3px rgba(26,26,18,0.04), 0 1px 0 rgba(26,26,18,0.02);
+    --shadow-lift: 0 1px 2px rgba(26,26,18,0.04), 0 8px 32px rgba(26,26,18,0.08);
+  }
+
+  body {
+    background: var(--bg);
+    font-family: 'Inter', sans-serif;
+    color: var(--body);
+    line-height: 1.6;
+    min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  /* ===================== TOP BAR ===================== */
+  .top-bar {
+    background: var(--bg-card);
+    border-bottom: 1px solid var(--border);
+    padding: 18px 32px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: sticky;
+    top: 0;
+    z-index: 50;
+  }
+  .top-logo {
+    font-family: 'Fraunces', serif;
+    font-size: 22px;
+    font-weight: 600;
+    color: var(--ink);
+    letter-spacing: -0.015em;
+    text-decoration: none;
+  }
+  .top-logo span { color: var(--gold); }
+  .top-actions { display: flex; gap: 14px; align-items: center; }
+  .pill-vip {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 7px 14px;
+    background: var(--gold-pale);
+    border: 1px solid rgba(184,137,58,0.3);
+    border-radius: 100px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--gold-dk);
+  }
+  .pill-vip::before {
+    content: '';
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--gold);
+  }
+
+  /* ===================== STAGE ===================== */
+  .stage {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 64px 32px 100px;
+  }
+
+  .screen {
+    display: none;
+    animation: fadeUp 0.5s ease;
+  }
+  .screen.active { display: block; }
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ===================== HERO PILL ===================== */
+  .hero-pill-wrap {
+    text-align: center;
+    margin-bottom: 32px;
+  }
+  .hero-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 22px;
+    background: var(--green-pale);
+    border: 1px solid rgba(63,90,61,0.25);
+    border-radius: 100px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--green-dk);
+  }
+  .hero-pill::before {
+    content: '';
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--green);
+  }
+  .hero-pill.gold {
+    background: var(--gold-pale);
+    border-color: rgba(184,137,58,0.3);
+    color: var(--gold-dk);
+  }
+  .hero-pill.gold::before { background: var(--gold); }
+
+  /* ===================== HERO HEADING ===================== */
+  .hero-heading {
+    font-family: 'Fraunces', serif;
+    font-size: 88px;
+    font-weight: 500;
+    line-height: 0.95;
+    color: var(--ink);
+    text-align: center;
+    letter-spacing: -0.03em;
+    margin-bottom: 24px;
+    font-variation-settings: "opsz" 144;
+  }
+  .hero-heading .accent {
+    font-style: italic;
+    color: var(--green);
+    font-weight: 500;
+  }
+  .hero-heading.smaller { font-size: 72px; }
+
+  .hero-meta {
+    text-align: center;
+    margin-bottom: 48px;
+  }
+  .hero-meta-text {
+    font-family: 'Fraunces', serif;
+    font-size: 19px;
+    font-style: italic;
+    color: var(--mid);
+    font-weight: 400;
+    line-height: 1.5;
+    max-width: 520px;
+    margin: 0 auto;
+  }
+
+  /* ===================== INTRO SCREEN ===================== */
+  .intro-body {
+    max-width: 620px;
+    margin: 0 auto;
+  }
+  .intro-body p {
+    font-family: 'Fraunces', serif;
+    font-size: 20px;
+    line-height: 1.65;
+    color: var(--ink-soft);
+    margin-bottom: 22px;
+    font-weight: 400;
+    text-align: center;
+    font-variation-settings: "opsz" 18;
+  }
+  .intro-body p em {
+    font-style: italic;
+    color: var(--ink);
+    font-weight: 500;
+  }
+  .intro-body .three-up {
+    font-size: 16px;
+    color: var(--green-dk);
+    font-weight: 600;
+    font-family: 'Inter', sans-serif;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    font-style: normal;
+  }
+  .begin-wrap {
+    text-align: center;
+    margin-top: 56px;
+  }
+
+  /* ===================== DECORATIVE DIVIDER ===================== */
+  .deco-divider {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 48px 0;
+    gap: 14px;
+  }
+  .deco-divider .line {
+    flex: 0 0 60px;
+    height: 1px;
+    background: var(--border-strong);
+  }
+  .deco-divider .glyph {
+    font-size: 8px;
+    color: var(--gold);
+    letter-spacing: 0.6em;
+  }
+
+  /* ===================== QUESTION SCREEN ===================== */
+  .progress-wrap {
+    margin-bottom: 48px;
+  }
+  .progress-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 10px;
+  }
+  .progress-label {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--mid);
+  }
+  .progress-count {
+    font-family: 'Fraunces', serif;
+    font-size: 16px;
+    font-style: italic;
+    color: var(--green-dk);
+    font-weight: 500;
+  }
+  .progress-bar {
+    height: 3px;
+    background: var(--border);
+    border-radius: 100px;
+    position: relative;
+    overflow: hidden;
+  }
+  .progress-fill {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    background: var(--green);
+    border-radius: 100px;
+    transition: width 0.45s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .q-eyebrow-wrap {
+    text-align: left;
+    margin-bottom: 18px;
+  }
+  .q-eyebrow {
+    display: inline-block;
+    padding: 6px 14px;
+    background: var(--bg-soft);
+    border-radius: 100px;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--mid);
+  }
+
+  .q-title {
+    font-family: 'Fraunces', serif;
+    font-size: 38px;
+    font-weight: 500;
+    line-height: 1.2;
+    color: var(--ink);
+    margin-bottom: 14px;
+    letter-spacing: -0.02em;
+    font-variation-settings: "opsz" 36;
+  }
+
+  .q-hint {
+    font-size: 14px;
+    font-style: italic;
+    color: var(--mid);
+    margin-bottom: 36px;
+    font-family: 'Fraunces', serif;
+  }
+
+  .options {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 48px;
+  }
+
+  .option {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    padding: 22px 26px;
+    background: var(--bg-card);
+    border: 1.5px solid var(--border);
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-align: left;
+    width: 100%;
+    font-family: 'Inter', sans-serif;
+    box-shadow: var(--shadow-card);
+  }
+  .option:hover {
+    border-color: var(--green);
+    background: var(--green-pale-soft);
+    transform: translateY(-1px);
+  }
+  .option.selected {
+    border-color: var(--green);
+    background: var(--green-pale-soft);
+  }
+
+  .option-marker {
+    flex-shrink: 0;
+    width: 22px;
+    height: 22px;
+    border: 1.5px solid var(--light);
+    background: #fff;
+    margin-top: 2px;
+    transition: all 0.2s;
+    position: relative;
+  }
+  .option.single .option-marker { border-radius: 50%; }
+  .option.multi .option-marker { border-radius: 4px; }
+  .option.selected .option-marker {
+    border-color: var(--green);
+    background: var(--green);
+  }
+  .option.single.selected .option-marker::after {
+    content: '';
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    width: 8px; height: 8px;
+    background: #fff;
+    border-radius: 50%;
+  }
+  .option.multi.selected .option-marker::after {
+    content: '✓';
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    color: #fff;
+    font-size: 13px;
+    font-weight: 700;
+    line-height: 1;
+  }
+
+  .option-text {
+    font-family: 'Fraunces', serif;
+    font-size: 17px;
+    color: var(--ink-soft);
+    line-height: 1.55;
+    flex: 1;
+    font-weight: 400;
+  }
+  .option-text em {
+    font-style: italic;
+    color: var(--ink);
+    font-weight: 500;
+  }
+
+  .q-nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    border-top: 1px solid var(--border);
+    padding-top: 28px;
+  }
+
+  /* ===================== RESULT SCREEN ===================== */
+  .body-prose p {
+    font-family: 'Fraunces', serif;
+    font-size: 21px;
+    line-height: 1.6;
+    color: var(--ink-soft);
+    margin-bottom: 22px;
+    font-weight: 400;
+    font-variation-settings: "opsz" 18;
+  }
+  .body-prose p em {
+    font-style: italic;
+    color: var(--ink);
+    font-weight: 500;
+  }
+  .body-prose p:last-child { margin-bottom: 0; }
+
+  /* Q2 quote */
+  .q2-quote {
+    position: relative;
+    margin: 52px 0;
+    padding: 36px 40px 36px 64px;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--gold);
+    border-radius: 4px;
+  }
+  .q2-quote::before {
+    content: '"';
+    position: absolute;
+    left: 22px;
+    top: 12px;
+    font-family: 'Fraunces', serif;
+    font-size: 90px;
+    color: var(--gold);
+    line-height: 1;
+    opacity: 0.5;
+    font-style: italic;
+  }
+  .q2-quote p {
+    font-family: 'Fraunces', serif;
+    font-size: 19px;
+    font-style: italic;
+    line-height: 1.55;
+    color: var(--ink-soft);
+    font-weight: 400;
+    margin: 0;
+  }
+  .q2-quote p em {
+    color: var(--ink);
+    font-weight: 500;
+  }
+  .q2-context {
+    font-family: 'Fraunces', serif;
+    font-size: 14px;
+    font-style: italic;
+    font-weight: 400;
+    color: var(--mid);
+    margin: 0 0 14px 0;
+    line-height: 1.5;
+  }
+
+  /* Depth nod — sage inset */
+  .depth-nod {
+    margin: 36px 0;
+    padding: 28px 32px;
+    background: var(--green-pale-soft);
+    border-radius: 8px;
+    border-left: 3px solid var(--green);
+  }
+  .depth-nod-tag {
+    display: inline-block;
+    padding: 5px 11px;
+    background: rgba(63,90,61,0.15);
+    border-radius: 100px;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--green-dk);
+    margin-bottom: 12px;
+  }
+  .depth-nod p {
+    font-family: 'Fraunces', serif;
+    font-size: 17px;
+    line-height: 1.6;
+    color: var(--ink-soft);
+    font-weight: 400;
+    margin: 0;
+  }
+  .depth-nod p em {
+    font-style: italic;
+    color: var(--ink);
+    font-weight: 500;
+  }
+
+  /* Section header */
+  .section-header { margin-bottom: 32px; }
+  .section-eyebrow {
+    display: inline-block;
+    padding: 6px 14px;
+    background: var(--bg-soft);
+    border-radius: 100px;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--mid);
+    margin-bottom: 18px;
+  }
+  .section-title {
+    font-family: 'Fraunces', serif;
+    font-size: 52px;
+    font-weight: 500;
+    line-height: 1;
+    color: var(--ink);
+    letter-spacing: -0.025em;
+    margin-bottom: 12px;
+    font-variation-settings: "opsz" 60;
+  }
+  .section-title .accent-green {
+    font-style: italic;
+    color: var(--green);
+    font-weight: 500;
+  }
+  .section-title .accent-gold {
+    font-style: italic;
+    color: var(--gold);
+    font-weight: 500;
+  }
+  .section-sub {
+    font-family: 'Fraunces', serif;
+    font-size: 17px;
+    font-style: italic;
+    color: var(--mid);
+    font-weight: 400;
+    line-height: 1.5;
+    max-width: 580px;
+  }
+
+  /* Shift cards */
+  .shift-card {
+    padding: 32px 36px;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    margin-bottom: 16px;
+    box-shadow: var(--shadow-card);
+    transition: border-color 0.2s, transform 0.15s;
+  }
+  .shift-card:hover {
+    border-color: var(--green);
+    transform: translateY(-1px);
+  }
+  .shift-card.lines:hover { border-color: var(--gold); }
+  .shift-label {
+    display: inline-block;
+    padding: 6px 12px;
+    background: var(--green-pale);
+    border-radius: 100px;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--green-dk);
+    margin-bottom: 16px;
+  }
+  .shift-card.lines .shift-label {
+    background: var(--gold-pale);
+    color: var(--gold-dk);
+  }
+  .shift-body p {
+    font-family: 'Fraunces', serif;
+    font-size: 17px;
+    line-height: 1.65;
+    color: var(--ink-soft);
+    margin-bottom: 14px;
+    font-weight: 400;
+  }
+  .shift-body p:last-child { margin-bottom: 0; }
+  .shift-body p em {
+    font-style: italic;
+    color: var(--ink);
+    font-weight: 500;
+  }
+  .shift-body strong { color: var(--ink); font-weight: 600; }
+  .shift-body ul {
+    list-style: none;
+    margin: 8px 0 14px;
+    padding-left: 0;
+  }
+  .shift-body ul li {
+    font-family: 'Fraunces', serif;
+    font-size: 16px;
+    color: var(--ink-soft);
+    padding: 4px 0 4px 22px;
+    position: relative;
+    line-height: 1.55;
+  }
+  .shift-body ul li::before {
+    content: '';
+    position: absolute;
+    left: 6px;
+    top: 14px;
+    width: 6px;
+    height: 6px;
+    background: var(--gold);
+    border-radius: 50%;
+  }
+  .shift-body ul li em { font-style: italic; color: var(--ink); font-weight: 500; }
+
+  /* Lines summary */
+  .lines-summary {
+    background: var(--bg-violet);
+    padding: 28px 32px;
+    border-radius: 10px;
+    margin-bottom: 24px;
+  }
+  .lines-summary-tag {
+    display: inline-block;
+    padding: 5px 11px;
+    background: rgba(95,80,140,0.15);
+    border-radius: 100px;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: #5C4F8C;
+    margin-bottom: 12px;
+  }
+  .lines-summary-text {
+    font-family: 'Fraunces', serif;
+    font-size: 18px;
+    font-style: italic;
+    color: var(--ink);
+    font-weight: 500;
+    line-height: 1.45;
+  }
+
+  .lines-closing p {
+    font-family: 'Fraunces', serif;
+    font-size: 17px;
+    line-height: 1.65;
+    color: var(--ink-soft);
+    margin-top: 16px;
+    font-weight: 400;
+  }
+  .lines-closing p em {
+    font-style: italic;
+    color: var(--ink);
+    font-weight: 500;
+  }
+
+  /* BYOB closing card */
+  .byob-closing {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 56px 48px;
+    margin-top: 56px;
+    box-shadow: var(--shadow-lift);
+    position: relative;
+  }
+  .byob-closing::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--green) 0%, var(--gold) 50%, var(--plum) 100%);
+    border-radius: 14px 14px 0 0;
+  }
+
+  /* Rotating badge stuck to top-right corner of byob-closing */
+  .byob-badge {
+    position: absolute;
+    top: 0;
+    right: 0;
+    transform: translate(35%, -25%);
+    width: 150px;
+    height: 150px;
+    z-index: 5;
+    pointer-events: none;
+  }
+  .byob-badge svg.rim {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    animation: byob-badge-spin 22s linear infinite;
+  }
+  .byob-badge .paw {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 42px;
+    height: 42px;
+    fill: var(--green);
+  }
+  .byob-badge text {
+    font-family: 'Inter', sans-serif;
+    font-weight: 700;
+    fill: var(--gold-dk);
+    text-transform: uppercase;
+  }
+  @keyframes byob-badge-spin {
+    to { transform: rotate(360deg); }
+  }
+  @media (max-width: 600px) {
+    .byob-badge {
+      width: 110px;
+      height: 110px;
+      transform: translate(28%, -22%);
+    }
+    .byob-badge .paw {
+      width: 32px;
+      height: 32px;
+    }
+  }
+
+  /* Paw print confetti canvas - sits behind/around archetype name */
+  .confetti-canvas {
+    position: absolute;
+    top: -80px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 700px;
+    max-width: 100vw;
+    height: 400px;
+    pointer-events: none;
+    z-index: 1;
+  }
+  .archetype-name-wrap {
+    position: relative;
+    display: block;
+  }
+  .archetype-name-wrap > .hero-heading {
+    position: relative;
+    z-index: 2;
+  }
+  .byob-eyebrow-wrap {
+    text-align: center;
+    margin-bottom: 24px;
+  }
+  .byob-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 18px;
+    background: var(--gold-pale);
+    border: 1px solid rgba(184,137,58,0.3);
+    border-radius: 100px;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--gold-dk);
+  }
+  .byob-pill::before {
+    content: '✦';
+    font-size: 12px;
+    color: var(--gold);
+  }
+  .byob-heading {
+    font-family: 'Fraunces', serif;
+    font-size: 44px;
+    font-weight: 500;
+    line-height: 1.05;
+    color: var(--ink);
+    text-align: center;
+    letter-spacing: -0.025em;
+    margin-bottom: 28px;
+    font-variation-settings: "opsz" 48;
+  }
+  .byob-heading .accent {
+    font-style: italic;
+    color: var(--green);
+    font-weight: 500;
+  }
+  .byob-body p {
+    font-family: 'Fraunces', serif;
+    font-size: 18px;
+    line-height: 1.65;
+    color: var(--ink-soft);
+    margin-bottom: 18px;
+    font-weight: 400;
+  }
+  .byob-body p em {
+    font-style: italic;
+    color: var(--ink);
+    font-weight: 500;
+  }
+  .byob-body p strong {
+    color: var(--ink);
+    font-weight: 600;
+  }
+  .byob-body ul.stats-list {
+    list-style: none;
+    margin: 0 0 22px 0;
+    padding: 0;
+  }
+  .byob-body ul.stats-list li {
+    font-family: 'Fraunces', serif;
+    font-size: 17px;
+    line-height: 1.55;
+    color: var(--ink-soft);
+    padding: 12px 0 12px 32px;
+    position: relative;
+    border-bottom: 1px solid var(--border);
+    font-weight: 400;
+  }
+  .byob-body ul.stats-list li:last-child { border-bottom: none; }
+  .byob-body ul.stats-list li::before {
+    content: '';
+    position: absolute;
+    left: 8px;
+    top: 22px;
+    width: 8px;
+    height: 8px;
+    background: var(--gold);
+    border-radius: 50%;
+  }
+  .byob-body ul.stats-list li strong {
+    color: var(--ink);
+    font-weight: 700;
+  }
+  .byob-body ul.stats-list li em {
+    font-style: italic;
+    color: var(--ink);
+    font-weight: 500;
+  }
+  .byob-cta-wrap {
+    text-align: center;
+    margin-top: 32px;
+  }
+
+  /* ===================== BUTTONS ===================== */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 16px 32px;
+    border-radius: 100px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    text-decoration: none;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    border: 1.5px solid transparent;
+    font-family: 'Inter', sans-serif;
+    white-space: nowrap;
+  }
+  .btn-primary {
+    background: var(--green);
+    color: #fff;
+    border-color: var(--green);
+  }
+  .btn-primary:hover {
+    background: var(--green-dk);
+    border-color: var(--green-dk);
+    transform: translateY(-1px);
+  }
+  .btn-primary::after {
+    content: '→';
+    font-size: 14px;
+    transition: transform 0.2s;
+  }
+  .btn-primary:hover::after { transform: translateX(3px); }
+
+  .btn-secondary {
+    background: transparent;
+    color: var(--ink);
+    border-color: var(--ink);
+  }
+  .btn-secondary:hover {
+    background: var(--ink);
+    color: #fff;
+  }
+  .btn-ghost {
+    background: transparent;
+    color: var(--mid);
+    border-color: var(--border-strong);
+  }
+  .btn-ghost:hover {
+    background: var(--bg-soft);
+    color: var(--ink);
+    border-color: var(--ink);
+  }
+  .btn-large {
+    padding: 18px 38px;
+    font-size: 12px;
+  }
+
+  /* Question nav buttons override */
+  .q-nav .btn-ghost { padding: 14px 26px; }
+  .q-nav .btn-primary { padding: 14px 26px; font-size: 11px; }
+  .q-nav .btn-primary::after { content: '→'; }
+
+  /* ===================== ACTION BAR ===================== */
+  .action-bar {
+    display: flex;
+    gap: 14px;
+    justify-content: center;
+    margin: 48px 0;
+    padding: 28px;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+  }
+
+  /* ===================== BLESSING ===================== */
+  .blessing {
+    text-align: center;
+    margin-top: 64px;
+    padding: 48px 32px 32px;
+    border-top: 1px solid var(--border);
+  }
+  .blessing-text {
+    font-family: 'Fraunces', serif;
+    font-size: 21px;
+    font-style: italic;
+    color: var(--ink-soft);
+    line-height: 1.55;
+    max-width: 540px;
+    margin: 0 auto 20px;
+    font-weight: 400;
+  }
+  .blessing-text em {
+    color: var(--ink);
+    font-weight: 500;
+  }
+  .blessing-paw {
+    display: inline-block;
+    width: 18px;
+    height: 18px;
+    fill: var(--green);
+    vertical-align: -3px;
+    margin-left: 4px;
+    transform: rotate(-12deg);
+  }
+  .blessing-sign {
+    font-family: 'Fraunces', serif;
+    font-size: 17px;
+    color: var(--green);
+    font-style: italic;
+    font-weight: 500;
+  }
+
+  /* ===================== TOAST ===================== */
+  .toast {
+    position: fixed;
+    bottom: 32px;
+    left: 50%;
+    transform: translateX(-50%) translateY(80px);
+    background: var(--ink);
+    color: #fff;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    padding: 16px 28px;
+    border-radius: 100px;
+    opacity: 0;
+    transition: all 0.3s;
+    pointer-events: none;
+    white-space: nowrap;
+    z-index: 999;
+  }
+  .toast.show {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+
+  /* Error msg */
+  .error-msg {
+    color: var(--plum);
+    font-size: 13px;
+    font-style: italic;
+    margin-bottom: 16px;
+    display: none;
+    font-family: 'Fraunces', serif;
+  }
+  .error-msg.show { display: block; }
+
+  /* ===================== RESPONSIVE ===================== */
+  @media (max-width: 720px) {
+    .top-bar { padding: 14px 18px; }
+    .top-logo { font-size: 18px; }
+    .stage { padding: 36px 18px 60px; }
+    .hero-heading { font-size: 52px; }
+    .hero-heading.smaller { font-size: 44px; }
+    .intro-body p { font-size: 17px; }
+    .body-prose p { font-size: 18px; }
+    .q-title { font-size: 26px; }
+    .option { padding: 18px 20px; }
+    .option-text { font-size: 15px; }
+    .q2-quote { padding: 28px 24px 28px 48px; margin: 36px 0; }
+    .q2-quote::before { font-size: 70px; left: 14px; top: 4px; }
+    .q2-quote p { font-size: 17px; }
+    .section-title { font-size: 36px; }
+    .shift-card { padding: 24px 22px; }
+    .shift-body p { font-size: 16px; }
+    .byob-closing { padding: 40px 26px; }
+    .byob-heading { font-size: 30px; }
+    .byob-body p { font-size: 16px; }
+    .blessing-text { font-size: 18px; }
+    .action-bar { flex-direction: column; padding: 22px; }
+    .action-bar .btn { width: 100%; }
+    .q-nav { flex-direction: column-reverse; gap: 10px; }
+    .q-nav .btn { width: 100%; }
+    .deco-divider .line { flex: 0 0 40px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ===================== TOP BAR ===================== -->
+<div class="top-bar">
+  <a class="top-logo" href="#" onclick="restartAudit(); return false;">DannyBunny<span>.co</span></a>
+  <div class="top-actions">
+    <span class="pill-vip">The Audit</span>
+  </div>
+</div>
+
+<!-- ===================== STAGE ===================== -->
+<div class="stage">
+
+  <!-- ============== INTRO SCREEN ============== -->
+  <div class="screen active" id="screen-intro">
+    <div class="hero-pill-wrap">
+      <span class="hero-pill gold">A Free Tool · 4 Minutes</span>
+    </div>
+
+    <h1 class="hero-heading">The AI Confidence <span class="accent">Audit</span></h1>
+
+    <div class="hero-meta">
+      <p class="hero-meta-text">A 4-minute diagnostic for the AI-curious, the AI-cautious, and the AI-chaotic.</p>
+    </div>
+
+    <div class="deco-divider">
+      <div class="line"></div>
+      <div class="glyph">· · ·</div>
+      <div class="line"></div>
+    </div>
+
+    <div class="intro-body">
+      <p>This isn't a skill quiz. Nobody's going to ask you to write a prompt or name a model. This is a more loving kind of audit. The kind that asks how you actually <em>relate</em> to AI right now, what's underneath that relationship, and where it could go from here.</p>
+
+      <p class="three-up">Six questions · Honest answers · No wrong ones</p>
+
+      <p>At the end, you'll get your archetype (one of four cats, naturally), a personalised read on where you are, and one specific shift that's worth making next. Plus a downloadable version you can keep.</p>
+
+      <p>The questions don't disappear when you become competent. They get more interesting. Let's see where yours are.</p>
+    </div>
+
+    <div class="begin-wrap">
+      <button class="btn btn-primary btn-large" onclick="startAudit()">Begin the Audit</button>
+    </div>
+  </div>
+
+  <!-- ============== QUESTION SCREEN ============== -->
+  <div class="screen" id="screen-question">
+    <div class="progress-wrap">
+      <div class="progress-meta">
+        <span class="progress-label">The Audit</span>
+        <span class="progress-count" id="progressCount">Question 1 of 6</span>
+      </div>
+      <div class="progress-bar">
+        <div class="progress-fill" id="progressFill" style="width: 16.6%"></div>
+      </div>
+    </div>
+
+    <div class="q-eyebrow-wrap">
+      <span class="q-eyebrow" id="qEyebrow">Question 1</span>
+    </div>
+    <h2 class="q-title" id="qTitle">Question text</h2>
+    <p class="q-hint" id="qHint">Hint text</p>
+
+    <div class="error-msg" id="errorMsg">Please pick at least one to continue.</div>
+
+    <div class="options" id="optionsContainer"></div>
+
+    <div class="q-nav">
+      <button class="btn btn-ghost" id="backBtn" onclick="goBack()">← Back</button>
+      <button class="btn btn-primary" id="nextBtn" onclick="goNext()">Next</button>
+    </div>
+  </div>
+
+  <!-- ============== RESULT SCREEN ============== -->
+  <div class="screen" id="screen-result">
+    <div id="resultContent"></div>
+  </div>
+
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+/* ============== QUESTION DATA ============== */
+const QUESTIONS = [
+  {
+    eyebrow: "Question 1 · The Spine",
+    title: "When you think about your relationship with AI right now, which of these is closest to true?",
+    hint: "Pick the one that's most honest. Just one.",
+    type: "single",
+    key: "q1",
+    options: [
+      { id: "a", text: "I haven't really engaged. Could be caution, could be overwhelm, could be principle. Either way, I'm watching from a distance." },
+      { id: "b", text: "I've poked at it a few times. I've seen it work. I just haven't figured out how it actually fits <em>my</em> life and <em>my</em> business." },
+      { id: "c", text: "I'm using it constantly. Maybe too constantly. There are tabs open right now I haven't closed in a week." },
+      { id: "d", text: "I've stopped chasing tools. I've built a few things that work. Now I'm more interested in <em>how</em> I use it than <em>whether</em> I use it." }
+    ]
+  },
+  {
+    eyebrow: "Question 2 · The Underneath",
+    title: "When you think about AI, what's the dominant feeling in your body?",
+    hint: "Pick the one that's most true right now.",
+    type: "single",
+    key: "q2",
+    options: [
+      { id: "wariness", text: "Wariness. Something about it doesn't sit right with me yet." },
+      { id: "curiosity", text: "Curiosity. I want to know more, I just don't know where to start." },
+      { id: "overwhelm", text: "Overwhelm. There's too much, too fast, too noisy." },
+      { id: "excitement", text: "Excitement. I love a new tool. I love a new toy." },
+      { id: "calm", text: "Calm. I've made my peace with what it is and isn't." }
+    ]
+  },
+  {
+    eyebrow: "Question 3 · The Quiet Question",
+    title: "Which of these questions, if any, have actually crossed your mind about AI?",
+    hint: "Pick all that apply. Or pick the last one if none have come up yet.",
+    type: "multi",
+    key: "q3",
+    options: [
+      { id: "mine", text: "Does using this make my work less mine?" },
+      { id: "outsource", text: "Am I outsourcing thinking I should still be doing?" },
+      { id: "surface", text: "If AI can mimic the surface of my craft, what was I really building all this time?" },
+      { id: "matters", text: "How do I use this without losing the part of me that matters?" },
+      { id: "nevertouch", text: "What should AI never touch in my life or work?" },
+      { id: "none", text: "None of these have come up for me yet.", exclusive: true }
+    ]
+  },
+  {
+    eyebrow: "Question 4 · The Where",
+    title: "Where does AI actually show up in your day right now?",
+    hint: "Pick the one that's closest.",
+    type: "single",
+    key: "q4",
+    options: [
+      { id: "nowhere", text: "Nowhere. It's not part of my world yet." },
+      { id: "occasional", text: "Occasionally. I might use it once or twice a week for something specific." },
+      { id: "often", text: "Often. It's open in a tab and I drop in and out without thinking." },
+      { id: "always", text: "Always. It's woven into how I work. I'd notice if it were gone." }
+    ]
+  },
+  {
+    eyebrow: "Question 5 · The Friction",
+    title: "What's the part of your work that drains you most right now?",
+    hint: "Pick all that apply. Or the last one if none of it drains you.",
+    type: "multi",
+    key: "q5",
+    options: [
+      { id: "content", text: "Making content. The endless feeding of the algorithm." },
+      { id: "selling", text: "Selling. Writing copy, talking about my offer, asking for the sale." },
+      { id: "admin", text: "Admin. The invisible labour. Emails, scheduling, follow-ups." },
+      { id: "decisions", text: "Decision-making. Too many choices, not enough clarity." },
+      { id: "nodrain", text: "Honestly, none of it drains me. I've found my rhythm.", exclusive: true }
+    ]
+  },
+  {
+    eyebrow: "Question 6 · The Sovereignty Check",
+    title: "If you could draw a line and say \"AI does not belong here in my work,\" where would the line go?",
+    hint: "Pick all that apply.",
+    type: "multi",
+    key: "q6",
+    options: [
+      { id: "nolinethought", text: "I haven't thought about a line yet." },
+      { id: "voice", text: "Anywhere that touches my actual voice or creative work." },
+      { id: "human", text: "Anywhere that involves real human connection with my clients." },
+      { id: "judgment", text: "Anywhere that requires my judgment about what matters." },
+      { id: "stayopen", text: "I'd rather not draw lines. I want to stay open to where it could go." }
+    ]
+  }
+];
+
+/* ============== RESULT CONTENT DATA ============== */
+const ARCHETYPES = {
+  window: {
+    name: "The Window-Watcher",
+    nameAccent: "Watcher",
+    nameLead: "The Window-",
+    opening: `
+      <p>You're at the window. Curious, cautious, watching the world have its AI moment from a safe and reasonable distance.</p>
+      <p>For some of you, this is principle. For others, it's overwhelm, or scepticism, or just <em>haven't gotten round to it</em>. And underneath all of those, for many of you, there's a quieter, harder set of questions humming. <em>If AI can take the difficult parts off my plate, does my work still mean what it meant? Does the labour matter? If craft is just the surface and AI can mimic the surface, what was I building all this time? Am I being a purist, or am I protecting something real?</em></p>
+      <p>These aren't small questions. They're the ones most people skip past so they can get on with using the tools. You haven't skipped them. That's not behind. That's <em>thinking</em>.</p>
+      <p>The window is a fine place to start. You're not refusing to look. You're choosing your own pace, which is frankly more sovereign than half the people currently sprinting toward AI like it's the last lifeboat. We're not going to drag you outside. We're going to crack the window, let a little air in, and see whether any of these questions have answers that feel true to you.</p>
+    `
+  },
+  curious: {
+    name: "The Curious Cat",
+    nameAccent: "Cat",
+    nameLead: "The Curious ",
+    opening: `
+      <p>You've nudged the door open. You've batted at AI a few times. Maybe you've gotten it to help with an email, or summarise something, or brainstorm an idea. It worked, sort of. You walked away thinking <em>huh, okay</em>.</p>
+      <p>What hasn't happened yet is the <em>holy 💩</em> moment. The one where you're sitting at your laptop and something clicks and you suddenly realise <em>wait, I can use this for my actual life, my actual business, the thing I'm stuck on right now.</em> You've heard people online have that moment. You've watched them post about it with slightly too many exclamation marks. You're still waiting for yours.</p>
+      <p>It's coming. You're not behind. You're literally one good prompt away from your <em>holy 💩</em>. The next move is showing you which prompt that is for someone like you.</p>
+    `
+  },
+  ninelives: {
+    name: "The Nine-Lives Cat",
+    nameAccent: "Cat",
+    nameLead: "The Nine-Lives ",
+    opening: `
+      <p>You're in it. Way in it. You're inhaling AI right now, new tools, new models, new platforms, new prompts, new ways of working, and you're loving it (or at least loving parts of it, even when it's a lot). That energy is real. That curiosity is real. And in this specific window of history, that energy is also a <em>genuine competitive advantage</em>. Most people are still standing at the window. You're already inside, getting your paws dirty, learning by doing. Don't let anyone, including this Audit, tell you that's a problem.</p>
+      <p>Here's the actual nuance worth noticing.</p>
+      <p>For some Nine-Lives Cats, the experience of being in it is electric. You're alive in it. Every new tool is a door, every new model is a playground, and you can feel yourself getting sharper week by week. For others, the experience is quieter and more ambivalent. You're using things constantly, you've genuinely got rhythm, but underneath the competence there's a hum of <em>am I just feeding the FOMO?</em> and <em>where is this all actually going?</em> For many, it's both at once, swinging hour to hour. All of those are real, and all of those are valid versions of being where you are.</p>
+      <p>The chaos, when it shows up, isn't a flaw. It's a phase that comes with the territory of being early and active. You learned by throwing yourself at things, which is exactly how the most capable AI users got there. You earned this stage.</p>
+      <p>And here's the question the Nine-Lives Cat is quietly asking. <em>Am I keeping up? Am I behind? How do I stay at the forefront when there's a new model dropping every fortnight?</em> The honest answer is that nobody is keeping up with everything, and you don't need to. Staying at the forefront isn't about consuming every new release. It's about getting so fluent with the underlying patterns of how AI works that any new tool feels like a variation on something you already know. The people at the front aren't the ones using the most tools. They're the ones who've built the deepest mental model of how to think with AI as a partner, and that model transfers across whatever launches next week.</p>
+      <p>Your next edge isn't <em>fewer</em> tools. It's <em>deeper compounding</em>. The slightly painful but genuinely powerful work of taking the things you've learned and weaving them into your actual operating system, so the energy you've been spending on exploration starts producing exponentially more output. You don't need to learn less. You need to make what you've learned <em>land harder</em>. Which, for a Nine-Lives Cat, is the harder skill.</p>
+    `
+  },
+  wise: {
+    name: "The Wise Cat",
+    nameAccent: "Cat",
+    nameLead: "The Wise ",
+    opening: `
+      <p>You've been out. You've used it. You've built things that genuinely work for you. AI has earned a real seat at your table, and you're past the question of <em>whether</em> to use it.</p>
+      <p>Here's what makes you a Wise Cat instead of just a competent one. You learned that the questions don't disappear when you become capable. They get <em>more interesting</em>. You know the tool's power, you know its limits, and that's exactly what lets you ask the human-lens questions about where it belongs in your work and where it doesn't. <em>What should AI never touch? Where am I outsourcing thinking I should still be doing? How do I use this to amplify what's mine, rather than slowly hand it over?</em></p>
+      <p>The Window-Watcher asks these questions to stay out. You ask them through the doing, because only the doing tells you which questions are worth asking. Same words, opposite relationship.</p>
+      <p>Your next edge isn't more capability. It's <em>discernment</em>. The art of using AI like a Wise Cat uses a window. To see further, not to leave.</p>
+    `
+  }
+};
+
+const Q2_CONTEXT = {
+  wariness: "You said wariness, something about AI doesn't sit right yet.",
+  curiosity: "You said curiosity, you want to know more but don't know where to start.",
+  overwhelm: "You said overwhelm, too much, too fast, too noisy.",
+  excitement: "You said excitement, you love a new tool, a new toy.",
+  calm: "You said calm, you've made your peace with what AI is and isn't."
+};
+
+const Q2_LINES = {
+  window: {
+    wariness: "The wariness is doing real work. It's worth listening to before it gets talked out of you by people who confuse caution with being behind.",
+    curiosity: "The curiosity is the door. You're at the window because you're choosing to be, not because the door is locked. That distinction matters more than you think.",
+    overwhelm: "The overwhelm makes sense. There's too much, too fast, and most of it is noise. The window isn't avoidance, it's filtering. Honour that.",
+    excitement: "Interesting. You're at the window but the feeling is excitement, not fear. That tells me the window's been a default, not a decision. You're nearer the door than you think.",
+    calm: "The calm is rare and worth noticing. Most people at the window are wrestling with something. You've made peace. The question for you isn't <em>whether</em> to engage. It's <em>whether you ever want to</em>. Both answers are valid."
+  },
+  curious: {
+    wariness: "The wariness is interesting given you've already started poking. It tells me you're not naive about what AI can do, or what it could cost. That's a good lens to keep as you go deeper.",
+    curiosity: "This is the most natural pairing in the whole Audit. You're a Curious Cat <em>who is curious</em>. Lean in. The next door opens easier than you think.",
+    overwhelm: "The overwhelm is real. You've seen what's possible and now there's a thousand directions. Good news: you don't need a thousand. You need <em>one good prompt for one real thing</em>. We'll start there.",
+    excitement: "The excitement plus the curiosity is a powerful combo. The risk for you isn't disengagement, it's <em>scattering</em>. Your <em>holy 💩</em> moment is one focused experiment away. Don't dilute it across ten.",
+    calm: "The calm is unusual at this stage. It tells me you're not chasing the hype, you're moving at your own pace. Which means when you do find your <em>holy 💩</em> moment, it'll actually stick."
+  },
+  ninelives: {
+    wariness: "Hold on. You're using AI constantly <em>and</em> you're wary of it? That's not contradiction, that's growing self-awareness. The wariness is the part of you starting to sort signal from noise. Listen to it.",
+    curiosity: "The curiosity that got you here is gold. It's also what's keeping you in the chaos. The next move isn't to lose the curiosity. It's to channel it.",
+    overwhelm: "Yeah, that tracks. You're overwhelmed because you've said yes to everything, and saying yes to everything is the trap of this stage. The cure isn't more discipline. It's permission to <em>close some tabs</em>.",
+    excitement: "The excitement is your fuel and it's beautiful. But Nine-Lives Cats with high excitement are also the ones most likely to burn out by month nine. Build a structure that can hold the excitement without being consumed by it.",
+    calm: "Calm and chaotic together is rare. It might mean you've genuinely made peace with the mess, or it might mean you've stopped noticing it. Worth checking which one."
+  },
+  wise: {
+    wariness: "Wariness in a Wise Cat is <em>earned</em>. It's not the wariness of someone who hasn't engaged. It's the wariness of someone who's seen the tool's reach and is choosing where it doesn't belong. That's not a limitation. That's authorship.",
+    curiosity: "Even after all this, you're still curious. That's the trait that keeps the Wise Cat wise. The day the curiosity dies is the day the discernment starts calcifying into rules. Keep asking.",
+    overwhelm: "Overwhelm in a Wise Cat is unusual and worth pausing on. It might be a signal that you've quietly drifted from discernment back into accumulation. Worth a small inventory. What did you add recently that you haven't actually integrated?",
+    excitement: "Excitement at this stage is a <em>good</em> sign. It means you haven't gone cynical, which is the trap of competence. You're still in love with the work, you've just gotten better at choosing what to love.",
+    calm: "This is the rarest and most enviable pairing in the whole Audit. Calm and Wise. You're playing a long game and you know what game you're playing. Most of what we'd offer here is unnecessary. The best advice is: keep going."
+  }
+};
+
+const DEPTH_NODS = {
+  window: "You ticked several of those quiet questions, which tells me your stance at the window isn't just caution. It's <em>thinking</em>. You're holding questions most people are too busy to hold. That's not avoidance. That's the slow, sovereign work of figuring out what's yours to keep. The rest of this Audit will keep that in mind.",
+  curious: "You ticked several of those quiet questions, which is unusual at this stage. Most Curious Cats are too excited about the <em>what</em> to ask the <em>what does this mean</em> questions yet. The fact that you're already asking them tells me you'll skip a phase that traps most people. The chaos phase. We can build accordingly.",
+  ninelives: "You ticked several of those quiet questions, which is the most hopeful thing in your whole result. Because it means somewhere underneath the seventeen tabs and the three half-built GPTs, you're already starting to ask the <em>real</em> questions. The questions that pull a Nine-Lives Cat into a Wise one. They're slower, deeper, and worth following. Don't lose them in the next shiny thing.",
+  wise: "You ticked several of those quiet questions, which is exactly what makes you a Wise Cat in the first place. The questions are the practice. The questions are the work. Keep asking better ones than yesterday's, and you'll keep growing past the version of you that built the systems you're using right now. That's the actual game."
+};
+
+const SHIFTS = {
+  window: {
+    content: { label: "On Content", body: `<p>The shift isn't to use AI for content. Not yet. The shift is to notice that <em>the dread of making content</em> is what's holding you at the window. Try this once: write a short caption yourself, paste it into <strong>Claude</strong>, and just ask <em>what would you cut</em>. That's it. You're not handing it over. You're inviting a second pair of eyes. See what that feels like.</p>` },
+    selling: { label: "On Selling", body: `<p>The selling drain is often less about AI and more about <em>not loving the offer enough to talk about it</em> (BYOB will tell you that for free). But if you wanted one tiny experiment: open <strong>Claude</strong> and ask it <em>what questions would a stranger have about my offer that I'm not answering</em>. Not to write the copy. Just to see what you've been missing. Information, not generation.</p>` },
+    admin: { label: "On Admin", body: `<p>Admin is the easiest, lowest-stakes place for a Window-Watcher to dip a paw in. Try this: next time you're writing a fiddly email, paste the gist into <strong>Claude or ChatGPT</strong> and ask it to clean it up. Read the result. Edit it back into your voice. You'll be surprised how much friction it removes from a part of work that wasn't sacred to you anyway.</p>` },
+    decisions: { label: "On Decision-Making", body: `<p>This is the most interesting drain for a Window-Watcher. AI is genuinely useful as a thinking partner, especially for someone who already takes decisions seriously. Next time you're stuck, try framing your decision as a question and asking <strong>Claude</strong> to <em>steelman both sides</em>. You stay the decider. It just gives you more terrain to stand on.</p>` },
+    nodrain: { label: "When Nothing Drains You", body: `<p>You're at the window and life is fine. That's a powerful place to engage with AI from, because you're not using it to fix something broken. You're using it from overflow. The shift here is permission: when you're ready, engage with one thing that's already working <em>just to make it more fun</em>. AI as play, not rescue.</p>` }
+  },
+  curious: {
+    content: { label: "On Content", body: `<p>This is where your <em>holy 💩</em> moment is most likely to live. Try this: take a 30-minute voice memo of you talking about a topic you know well. Drop it into <strong>Claude</strong> and ask it to pull out three usable post hooks. The shift isn't AI writing your content. It's AI <em>finding the gold you already said</em>.</p>` },
+    selling: { label: "On Selling", body: `<p>You've already seen AI work for small things. Now apply it to the part of selling that drains you most: the blank page. Take your offer, paste it into <strong>Claude</strong>, and ask <em>what's the one objection a smart buyer would have that I'm not addressing</em>. Then write the answer yourself. AI gives you the question. You give the voice.</p>` },
+    admin: { label: "On Admin", body: `<p>A Curious Cat with admin drain is the easiest <em>holy 💩</em> moment in the whole Audit. Set up <em>one</em> thing: a <strong>ChatGPT Project (or Custom GPT)</strong> that becomes your <em>email reply assistant</em>. Give it three things to start:</p>
+      <ul>
+        <li>5–10 emails you've sent in the past (so it learns your actual voice, not generic "professional" voice)</li>
+        <li>A short note on your tone (e.g. <em>"warm, direct, slightly playful, no corporate jargon, never starts with 'I hope this finds you well'"</em>)</li>
+        <li>A list of common email types you send (client follow-ups, scheduling, polite declines, etc.)</li>
+      </ul>
+      <p>Then for one week, every time you have to reply to an email, paste the incoming email into the project and ask for a draft <em>in your voice</em>. Edit lightly. Send.</p>
+      <p>By day three, the drafts will sound like you. By day seven, you'll wonder why you ever wrote inbox replies from scratch. <em>That's</em> the shift. Not generic "use AI for email." A specific assistant trained on you, ready to draft in seconds.</p>` },
+    decisions: { label: "On Decision-Making", body: `<p>Your shift: stop using AI to <em>answer</em> your decisions. Start using it to <em>map</em> them. Paste the situation into <strong>Claude</strong>, ask for the three options you haven't considered, and notice which one makes you flinch. The flinch is the data. AI just surfaces the options. You decide which one is true.</p>` },
+    nodrain: { label: "When Nothing Drains You", body: `<p>Curious and not drained is a beautiful place to be. Your shift is to use AI for the <em>interesting</em> questions, not the survival ones. Pick something you've been avoiding because it's hard, not because it's annoying. Use AI as a thinking partner on that. The depth is where the <em>holy 💩</em> lives.</p>` }
+  },
+  ninelives: {
+    content: { label: "On Content", body: `<p>Here's the painful one. You probably have three different tools doing some version of content help, and none of them have made content meaningfully easier. The shift: pick one. Just one. Use only that for 30 days. The constraint is the discipline. Tool-hopping is how Nine-Lives Cats stay drained.</p>` },
+    selling: { label: "On Selling", body: `<p>You know enough about AI to be dangerous with sales copy, which is exactly why your sales copy probably sounds like AI. The shift: <em>don't use AI for the first draft of your sales writing</em>. Write it badly yourself first. Then bring AI in to sharpen, not generate. You've earned the right to be specific. Use it.</p>` },
+    admin: { label: "On Admin", body: `<p>You've automated some admin and it's still draining you, which means the wrong admin got automated. The shift is an audit, not a tool. Spend 20 minutes listing every admin task you actually do in a week. Then ask which ones you <em>secretly enjoy</em> (those stay manual) and which ones you <em>resent</em> (those go to AI). Categorisation, then automation. Not the other way around.</p>` },
+    decisions: { label: "On Decision-Making", body: `<p>This is the trap of the Nine-Lives Cat. Too many tools means too many decisions about which tool to use, which is itself a drain. The shift: pick a <em>default</em> AI tool for thinking-through-decisions and stop choosing tools every time. <strong>Claude</strong> for everything thoughtful, full stop. Save the tool-comparing for downtime, not work time.</p>` },
+    nodrain: { label: "When Nothing Drains You", body: `<p>Nine-Lives Cat with no drain is rare and slightly suspect. Either you've genuinely found rhythm in the chaos (in which case, congrats, you're closer to Wise Cat than your archetype suggests), or you've stopped noticing the cost. Worth checking. Take a 24-hour break from every AI tool you use. See what you reach for and what you don't. The data will be useful.</p>` }
+  },
+  wise: {
+    content: { label: "On Content", body: `<p>You don't need a content shift. You need a <em>voice protection shift</em>. AI-assisted content slowly drifts toward AI-flavoured content unless you actively pull it back. Set up a personal "tells" list: words and phrases AI overuses that you'd never write. Run every AI-touched piece against that list before publishing. Small, sovereign, sustainable.</p>` },
+    selling: { label: "On Selling", body: `<p>A Wise Cat draining on selling is interesting. Usually it means the sales work is fine, but the <em>energetic cost</em> of selling has crept up. The shift isn't AI. It's a question: <em>is the offer I'm currently selling still the offer I want to be selling?</em> AI can write copy for an offer you've outgrown. It can't make the outgrowing go away. Worth a sit.</p>` },
+    admin: { label: "On Admin", body: `<p>You've probably already automated most of what should be automated. If admin is still draining, look at what <em>hasn't</em> been automated yet, and ask why. Often it's the work that requires <em>judgment</em>, which is exactly the work that's interesting to delegate to AI as a thinking partner (not an executor). Your shift: build one workflow where AI proposes and you approve, not the other way around.</p>` },
+    decisions: { label: "On Decision-Making", body: `<p>A Wise Cat with decision drain is usually carrying <em>too many decisions that aren't yours to make</em>. The shift isn't AI-as-decider (you already know the limits there). It's AI-as-sorter. Use it to triage which decisions are actually yours, which can be deferred, and which can be returned to whoever brought them to you. Free up the bandwidth for the decisions only you can make.</p>` },
+    nodrain: { label: "When Nothing Drains You", body: `<p>Wise Cat with no drain. You're operating with real flow. Congratulations. And, gently, watch out.</p>
+      <p>Flow is beautiful and flow is also where people quietly stop growing. When nothing is broken, the <em>direction</em> questions go silent. <em>Do more of what's working</em> is genuinely good advice and you're probably already doing it. It's just rarely the <em>only</em> question worth asking when you're in this position.</p>
+      <p>So the shift here isn't about fixing anything. It's about deliberately reintroducing the questions that <em>don't</em> get asked when life is good. Two worth sitting with:</p>
+      <ul>
+        <li><em>What's the work I'm not doing because I'm too busy doing this work well?</em></li>
+        <li><em>What would I be doing if I held myself to the standard I hold my best clients to?</em></li>
+      </ul>
+      <p>Use <strong>Claude</strong> as the thinking partner for both. Not to answer them. To map the terrain so you can see what's been hiding in plain sight while you've been busy excelling.</p>
+      <p><em>The calm isn't a destination. It's the conditions for the next ascent.</em></p>` }
+  }
+};
+
+const LINES_BLOCKS = {
+  nolinethought: { label: "On Not Having Drawn a Line Yet", body: `<p>Most people haven't. The line gets drawn the first time AI does something that makes you flinch. <em>That's</em> the moment to pay attention. Not the moment to feel behind for not having drawn one already. Bookmark this question. Come back to it in three months. The line will have started to draw itself.</p>` },
+  voice: { label: "On Voice and Creative Work", body: `<p>You're protecting your voice. Good. Voice is the one thing AI can mimic well enough to be dangerous, which is exactly why drawing this line matters.</p>
+    <p>The trick isn't keeping AI <em>out</em> of your creative work entirely. It's deciding <em>where in the process</em> it shows up. Most people who hold this line successfully use AI for the scaffolding (research, outlines, alt drafts to react against) and not for the actual writing or making.</p>
+    <p>Here's the slow drift to watch for. AI doesn't damage your voice in a single piece. It damages it over hundreds of small edits, polishes, and <em>"can you make this sound better"</em> requests. Each one nudges your voice a tiny bit toward AI's median, which is smooth, professional, and entirely forgettable. Your distinctiveness is lost in increments. Hold this line by occasionally writing something <em>no AI ever touches</em>, just to remind yourself what your voice actually sounds like when it's only yours.</p>` },
+  human: { label: "On Human Connection With Clients", body: `<p>You're protecting the relational core of your work. This is the line most coaches and service providers should be drawing, and most aren't. The temptation will be to let AI write the emails, draft the follow-ups, polish the messages, until eventually your client has been having a relationship with a tone, not a person.</p>
+    <p>Worth knowing: clients can usually feel when something's off, even if they can't name what. A slightly cleaner sentence, an unusually polished closing, a tone that doesn't quite match the last conversation. They might not flag it, but they notice. And the moment they consciously realise they've been talking to your <em>editor</em> instead of you, the trust is hard to put back.</p>
+    <p>The slight extra labour of writing your own client communications <em>is</em> the labour that the work is paying for. Hold the line.</p>` },
+  judgment: { label: "On Judgment About What Matters", body: `<p>You're protecting your discernment. This is the most important line on the list, and the hardest to hold, because AI is <em>very</em> good at producing things that <em>look</em> like judgment. Recommendations, frameworks, prioritised lists.</p>
+    <p>Here's a small thing worth noticing. When you ask AI for options, it almost always <em>also</em> tells you which one it would pick. <em>"I'd recommend option three because..."</em> That recommendation is the trap. Watch yourself in those moments. Did you have a favourite <em>before</em> you read its suggestion? And if your favourite was option two, did you quietly switch to three after reading the recommendation? That switch, that small unconscious deferral, is judgment-erosion happening in real time. Once you start catching it, you can't unsee it.</p>
+    <p>Hold this line by always asking <em>did I actually decide this, or did I accept what was offered?</em> And when you catch yourself switching to the AI's pick, ask the harder question. <em>Did I switch because it was genuinely better, or because it was easier than holding my own?</em></p>` },
+  stayopen: { label: "On Staying Open", body: `<p>Honest answer. Some people draw lines too early and then spend years defending positions that stopped fitting. Staying open is its own kind of sovereignty, <em>as long as you stay genuinely awake</em> while you stay open.</p>
+    <p>One thing worth knowing. The <em>no lines</em> stance gets riskier the more you use AI. Someone who's open <em>and</em> using it heavily is in the highest-drift environment, because every small handover compounds without a line to catch it. The discipline that comes with this stance is <em>checking in regularly</em> to ask <em>is this still amplifying me, or has it started replacing me?</em></p>
+    <p>The line might still come. But you'll draw it from experience, not pre-emptive caution.</p>` }
+};
+
+const LINES_LABELS = {
+  nolinethought: "haven't drawn one yet",
+  voice: "voice and creative work",
+  human: "human connection with clients",
+  judgment: "judgment about what matters",
+  stayopen: "staying open"
+};
+
+/* ============== STATE ============== */
+let state = {
+  currentQ: 0,
+  answers: { q1: null, q2: null, q3: [], q4: null, q5: [], q6: [] }
+};
+
+/* ============== AUDIT FLOW ============== */
+function startAudit() {
+  document.getElementById('screen-intro').classList.remove('active');
+  document.getElementById('screen-question').classList.add('active');
+  state.currentQ = 0;
+  renderQuestion();
+  scrollTop();
+}
+
+function renderQuestion() {
+  const q = QUESTIONS[state.currentQ];
+  document.getElementById('qEyebrow').textContent = q.eyebrow;
+  document.getElementById('qTitle').textContent = q.title;
+  document.getElementById('qHint').textContent = q.hint;
+  document.getElementById('progressCount').textContent = `Question ${state.currentQ + 1} of ${QUESTIONS.length}`;
+  document.getElementById('progressFill').style.width = `${((state.currentQ + 1) / QUESTIONS.length) * 100}%`;
+  document.getElementById('errorMsg').classList.remove('show');
+
+  const container = document.getElementById('optionsContainer');
+  container.innerHTML = '';
+
+  q.options.forEach(opt => {
+    const btn = document.createElement('button');
+    btn.className = `option ${q.type}`;
+    btn.dataset.id = opt.id;
+
+    const isSelected = q.type === 'single'
+      ? state.answers[q.key] === opt.id
+      : (state.answers[q.key] || []).includes(opt.id);
+
+    if (isSelected) btn.classList.add('selected');
+
+    btn.innerHTML = `
+      <div class="option-marker"></div>
+      <div class="option-text">${opt.text}</div>
+    `;
+
+    btn.onclick = () => toggleOption(q, opt);
+    container.appendChild(btn);
+  });
+
+  document.getElementById('backBtn').style.visibility = state.currentQ === 0 ? 'hidden' : 'visible';
+  document.getElementById('nextBtn').textContent = state.currentQ === QUESTIONS.length - 1 ? 'See My Result' : 'Next';
+}
+
+function toggleOption(q, opt) {
+  document.getElementById('errorMsg').classList.remove('show');
+  if (q.type === 'single') {
+    state.answers[q.key] = opt.id;
+  } else {
+    const arr = state.answers[q.key] || [];
+    if (opt.exclusive) {
+      if (arr.includes(opt.id)) {
+        state.answers[q.key] = [];
+      } else {
+        state.answers[q.key] = [opt.id];
+      }
+    } else {
+      const exclusiveIds = q.options.filter(o => o.exclusive).map(o => o.id);
+      let newArr = arr.filter(id => !exclusiveIds.includes(id));
+      if (newArr.includes(opt.id)) {
+        newArr = newArr.filter(id => id !== opt.id);
+      } else {
+        newArr.push(opt.id);
+      }
+      state.answers[q.key] = newArr;
+    }
+  }
+  renderQuestion();
+}
+
+function goBack() {
+  if (state.currentQ > 0) {
+    state.currentQ--;
+    renderQuestion();
+    scrollTop();
+  }
+}
+
+function goNext() {
+  const q = QUESTIONS[state.currentQ];
+  const ans = state.answers[q.key];
+  const valid = q.type === 'single' ? !!ans : (ans && ans.length > 0);
+
+  if (!valid) {
+    document.getElementById('errorMsg').classList.add('show');
+    return;
+  }
+
+  if (state.currentQ === QUESTIONS.length - 1) {
+    showResult();
+  } else {
+    state.currentQ++;
+    renderQuestion();
+    scrollTop();
+  }
+}
+
+/* ============== RESULT ASSEMBLY ============== */
+function determineArchetype() {
+  const q1 = state.answers.q1;
+  const q4 = state.answers.q4;
+  const map = { a: 'window', b: 'curious', c: 'ninelives', d: 'wise' };
+  let archetype = map[q1];
+  if (q1 === 'a' && q4 === 'always') archetype = 'curious';
+  return archetype;
+}
+
+function showResult() {
+  document.getElementById('screen-question').classList.remove('active');
+  document.getElementById('screen-result').classList.add('active');
+
+  const archetype = determineArchetype();
+  const arch = ARCHETYPES[archetype];
+  const q2Line = Q2_LINES[archetype][state.answers.q2];
+  const q2Context = Q2_CONTEXT[state.answers.q2];
+  const q3Score = (state.answers.q3 || []).filter(id => id !== 'none').length;
+  const showDepthNod = q3Score >= 3;
+
+  const q5 = state.answers.q5 || [];
+  const shiftBlocks = q5.map(id => {
+    const shift = SHIFTS[archetype][id];
+    if (!shift) return '';
+    return `
+      <div class="shift-card">
+        <div class="shift-label">${shift.label}</div>
+        <div class="shift-body">${shift.body}</div>
+      </div>
+    `;
+  }).join('');
+
+  const q6 = state.answers.q6 || [];
+  const linesSummary = q6.length > 0
+    ? `<div class="lines-summary">
+        <div class="lines-summary-tag">You drew lines around</div>
+        <p class="lines-summary-text">${q6.map(id => LINES_LABELS[id]).join('  ·  ')}</p>
+      </div>`
+    : '';
+
+  const linesBlocks = q6.map(id => {
+    const block = LINES_BLOCKS[id];
+    if (!block) return '';
+    return `
+      <div class="shift-card lines">
+        <div class="shift-label">${block.label}</div>
+        <div class="shift-body">${block.body}</div>
+      </div>
+    `;
+  }).join('');
+
+  const linesClosing = q6.length > 0
+    ? `<div class="lines-closing">
+        <p>The lines you drew (or chose not to) are yours. Nobody else's lines are going to fit your work, your voice, or your values. The fact that you've thought about this <em>at all</em> puts you ahead of most of the AI conversation, which is currently busy arguing about productivity while skipping the question of <em>what's worth being productive about</em>.</p>
+      </div>`
+    : '';
+
+  const html = `
+    <div class="hero-pill-wrap">
+      <span class="hero-pill">Your Result</span>
+    </div>
+    <div class="archetype-name-wrap">
+      <canvas class="confetti-canvas" id="confetti-canvas"></canvas>
+      <h1 class="hero-heading smaller">${arch.nameLead}<span class="accent">${arch.nameAccent}</span></h1>
+    </div>
+    <div class="hero-meta">
+      <p class="hero-meta-text">A snapshot of where you are with AI right now.<br>Honest, generous, and yours to keep.</p>
+    </div>
+
+    <div class="deco-divider">
+      <div class="line"></div><div class="glyph">· · ·</div><div class="line"></div>
+    </div>
+
+    <div class="body-prose">${arch.opening}</div>
+
+    <div class="q2-quote">
+      <p class="q2-context">${q2Context}</p>
+      <p>${q2Line}</p>
+    </div>
+
+    ${showDepthNod ? `
+      <div class="depth-nod">
+        <div class="depth-nod-tag">A note on your depth</div>
+        <p>${DEPTH_NODS[archetype]}</p>
+      </div>
+    ` : ''}
+
+    ${shiftBlocks ? `
+      <div class="deco-divider">
+        <div class="line"></div><div class="glyph">· · ·</div><div class="line"></div>
+      </div>
+
+      <div class="section-header">
+        <span class="section-eyebrow">Section Two</span>
+        <h2 class="section-title">Your One <span class="accent-green">Shift</span></h2>
+        <p class="section-sub">You told me what's draining you. Here's the smallest, truest move I'd suggest.</p>
+      </div>
+      ${shiftBlocks}
+    ` : ''}
+
+    ${linesSummary || linesBlocks ? `
+      <div class="deco-divider">
+        <div class="line"></div><div class="glyph">· · ·</div><div class="line"></div>
+      </div>
+
+      <div class="section-header">
+        <span class="section-eyebrow">Section Three</span>
+        <h2 class="section-title">Your Sovereign <span class="accent-gold">Lines</span></h2>
+        <p class="section-sub">You told me where AI doesn't belong in your work. Let me reflect that back to you.</p>
+      </div>
+      ${linesSummary}
+      ${linesBlocks}
+      ${linesClosing}
+    ` : ''}
+
+    <div class="action-bar">
+      <button class="btn btn-secondary" onclick="downloadPDF()">↓ Download PDF</button>
+      <button class="btn btn-ghost" onclick="restartAudit()">↻ Retake the Audit</button>
+    </div>
+
+    <div class="byob-closing">
+      <div class="byob-badge" aria-hidden="true">
+        <svg class="rim" viewBox="0 0 200 200">
+          <defs>
+            <path id="byobBadgePath" d="M 100, 100 m -78, 0 a 78,78 0 1,1 156,0 a 78,78 0 1,1 -156,0" />
+          </defs>
+          <text id="byobBadgeText" font-size="13">
+            <textPath href="#byobBadgePath" startOffset="0">
+              KEEP BUILDING · KEEP DREAMING · KEEP EXPANDING ·&nbsp;
+            </textPath>
+          </text>
+        </svg>
+        <svg class="paw" viewBox="0 0 24 24">
+          <ellipse cx="12" cy="16" rx="5.5" ry="4.5"/>
+          <ellipse cx="6" cy="10" rx="2.2" ry="2.8"/>
+          <ellipse cx="18" cy="10" rx="2.2" ry="2.8"/>
+          <ellipse cx="9" cy="5.5" rx="1.8" ry="2.4"/>
+          <ellipse cx="15" cy="5.5" rx="1.8" ry="2.4"/>
+        </svg>
+      </div>
+      <div class="byob-eyebrow-wrap">
+        <span class="byob-pill">A Note Before You Go</span>
+      </div>
+      <h2 class="byob-heading">The next <span class="accent">room</span></h2>
+      <div class="byob-body">
+        <p>The Audit was a snapshot. The bigger work is what happens <em>after</em>.</p>
+        <p>Look at what's actually happening.</p>
+        <ul class="stats-list">
+          <li>Over <strong>244,000 tech jobs</strong> were eliminated globally in 2025. Q1 2026 alone added another <strong>80,000</strong> worldwide, with analysts projecting a full-year figure that exceeds last year.</li>
+          <li>The CEOs of Anthropic and Ford have both publicly said AI will wipe out <strong>half of all entry-level white-collar jobs</strong>.</li>
+          <li>It's not just the US. Asia is feeling it too. India and Singapore lead Asia-Pacific tech layoffs in 2026, with companies like <strong>Alibaba, Baidu, and BYD</strong> all cutting workforce, and Singapore-based firms increasingly citing AI and automation as the driver.</li>
+          <li>Block, Amazon, Oracle, Accenture, Salesforce, HP have all directly cited AI as the reason for cutting tens of thousands of roles, often without warning.</li>
+          <li>Anything purely task-based, writing, design, marketing, customer support, admin, is being absorbed by AI faster than companies are willing to say out loud.</li>
+        </ul>
+        <p>That's not fear-mongering. That's just where we are.</p>
+        <p><em>And here's the other half of the picture, which almost nobody is putting next to that one.</em></p>
+        <p>While the old jobs are being absorbed, an entirely new economy is being built underneath them.</p>
+        <ul class="stats-list">
+          <li>There are now an estimated <strong>1.57 billion freelancers and independent workers worldwide</strong>, around <strong>47% of the global workforce</strong>.</li>
+          <li>The global creator economy has crossed <strong>$250 billion</strong>, with <strong>over 200 million people identifying as creators</strong> globally. Asia-Pacific is the second-largest and one of the fastest-growing regions.</li>
+          <li>On LinkedIn, the number of people adding <em>"founder"</em> to their profile grew <strong>69% year on year</strong>. Forty-seven percent said <em>AI made them more likely to start a business</em>.</li>
+          <li>Singapore alone has climbed to <strong>#4 globally in the startup ecosystem index</strong>, with over <strong>4,500 active startups</strong>, and Southeast Asia is forecast to grow faster than the US or Europe through 2026.</li>
+          <li>One person can now run what used to take a small team. Examples like <strong>Base44</strong> (sold to Wix for <strong>$80 million</strong> within six months of launch) and <strong>HeadshotPro</strong> (one founder, <strong>$3.6 million annual recurring revenue</strong>) are previews, not flukes.</li>
+        </ul>
+        <p>We are moving from a white-collar economy into a <em>no-collar</em> economy. Job titles are dissolving. Career ladders are dissolving. What's emerging instead is a world where anyone with the right expertise, the right judgement, and the right command of AI as leverage can make a living from a laptop. From anywhere. With or without a boss above them.</p>
+        <p>The people who thrive in this shift won't be the ones with the safest jobs. They'll be the ones with <em>options</em>. Multiple income streams. Something built on the side. A skill stack that no employer can take away because it doesn't belong to an employer in the first place.</p>
+        <p>That stance is what I call being <strong>your own boss</strong>. It's not a job title. It's a way of operating. Whether you're employed, self-employed, or somewhere in between, the question is the same. <em>Are you building something that's yours?</em></p>
+        <p>That work is what I do inside <strong>BYOB</strong>.</p>
+        <p>BYOB is a seven-week live cohort for people who want to build a real business with both impact and integrity, with AI woven through the whole thing. Not as a gimmick. As the actual leverage that lets one person produce more, reach further, and earn more without losing the part of the work that's <em>yours</em>.</p>
+        <p>If the worldview of this Audit resonated, BYOB is the next room.</p>
+        <p>The waitlist for Cohort 2 (June 2026) is open. Joining doesn't commit you to anything. You'll just hear first when doors open, and you'll get the Super Early Cat pricing window that's only available to waitlist members.</p>
+      </div>
+      <div class="byob-cta-wrap">
+        <a href="https://dannybunny.co/byob" target="_blank" class="btn btn-primary btn-large">Join the BYOB Waitlist</a>
+      </div>
+    </div>
+
+    <div class="blessing">
+      <p class="blessing-text">Whatever you do from here, whether our paths cross again inside BYOB or not, keep building. Keep dreaming. Keep expanding. Keep getting your paws dirty. <svg class="blessing-paw" viewBox="0 0 24 24" aria-hidden="true"><ellipse cx="12" cy="16" rx="5.5" ry="4.5"/><ellipse cx="6" cy="10" rx="2.2" ry="2.8"/><ellipse cx="18" cy="10" rx="2.2" ry="2.8"/><ellipse cx="9" cy="5.5" rx="1.8" ry="2.4"/><ellipse cx="15" cy="5.5" rx="1.8" ry="2.4"/></svg></p>
+      <div class="blessing-sign">— Dan</div>
+    </div>
+  `;
+
+  document.getElementById('resultContent').innerHTML = html;
+  scrollTop();
+
+  // Trigger delight effects after the DOM updates
+  requestAnimationFrame(() => {
+    fireConfetti();
+    calibrateBadge();
+  });
+}
+
+/* ============== DELIGHT EFFECTS ============== */
+const CONFETTI_COLORS = ['#3F5A3D', '#B8893A', '#6B2B3D', '#E8D9B8', '#8C6628'];
+
+function calibrateBadge() {
+  const path = document.querySelector('#byobBadgePath');
+  const text = document.querySelector('#byobBadgeText');
+  if (!path || !text) return;
+
+  // Wait for fonts to load before measuring
+  document.fonts.ready.then(() => {
+    const circumference = path.getTotalLength();
+    const target = circumference * 0.97; // small breathing room so end meets start cleanly
+
+    let fontSize = 13;
+    for (let attempt = 0; attempt < 30; attempt++) {
+      text.setAttribute('font-size', fontSize);
+      const textLen = text.getComputedTextLength();
+      if (Math.abs(textLen - target) < 1.5) break;
+      if (textLen < target) fontSize += 0.15;
+      else fontSize -= 0.15;
+    }
+  });
+}
+
+function fireConfetti() {
+  const canvas = document.getElementById('confetti-canvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+
+  // Set canvas resolution
+  const dpr = window.devicePixelRatio || 1;
+  canvas.width = canvas.offsetWidth * dpr;
+  canvas.height = canvas.offsetHeight * dpr;
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+  const cw = canvas.offsetWidth;
+  const cx = cw / 2;
+  const cy = 100;
+  const particles = [];
+
+  // Big paws — visible, charming
+  for (let i = 0; i < 24; i++) {
+    particles.push({
+      type: 'paw',
+      x: cx + (Math.random() - 0.5) * 80,
+      y: cy + (Math.random() - 0.5) * 25,
+      vx: (Math.random() - 0.5) * 8,
+      vy: -3 - Math.random() * 5,
+      size: 18 + Math.random() * 14,
+      color: CONFETTI_COLORS[Math.floor(Math.random() * CONFETTI_COLORS.length)],
+      rotation: Math.random() * Math.PI * 2,
+      rotSpeed: (Math.random() - 0.5) * 0.1,
+      opacity: 1
+    });
+  }
+  // Small dots for sparkle texture
+  for (let i = 0; i < 35; i++) {
+    particles.push({
+      type: 'dot',
+      x: cx + (Math.random() - 0.5) * 90,
+      y: cy + (Math.random() - 0.5) * 25,
+      vx: (Math.random() - 0.5) * 8,
+      vy: -3 - Math.random() * 6,
+      size: 2 + Math.random() * 3,
+      color: CONFETTI_COLORS[Math.floor(Math.random() * CONFETTI_COLORS.length)],
+      rotation: 0,
+      rotSpeed: 0,
+      opacity: 1
+    });
+  }
+
+  function drawPaw(x, y, size, color, rotation) {
+    ctx.save();
+    ctx.translate(x, y);
+    ctx.rotate(rotation);
+    ctx.fillStyle = color;
+    const s = size / 24;
+    ctx.beginPath();
+    ctx.ellipse(0, 4 * s, 5.5 * s, 4.5 * s, 0, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.beginPath();
+    ctx.ellipse(-6 * s, -2 * s, 2.2 * s, 2.8 * s, 0, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.beginPath();
+    ctx.ellipse(6 * s, -2 * s, 2.2 * s, 2.8 * s, 0, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.beginPath();
+    ctx.ellipse(-3 * s, -6.5 * s, 1.8 * s, 2.4 * s, 0, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.beginPath();
+    ctx.ellipse(3 * s, -6.5 * s, 1.8 * s, 2.4 * s, 0, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.restore();
+  }
+
+  function drawDot(x, y, size, color) {
+    ctx.fillStyle = color;
+    ctx.beginPath();
+    ctx.arc(x, y, size, 0, Math.PI * 2);
+    ctx.fill();
+  }
+
+  let active = particles.slice();
+  function animate() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    active.forEach(p => {
+      p.vy += 0.13;
+      p.x += p.vx;
+      p.y += p.vy;
+      p.rotation += p.rotSpeed;
+      p.opacity -= 0.005;
+      if (p.opacity > 0) {
+        ctx.globalAlpha = Math.max(0, p.opacity);
+        if (p.type === 'paw') drawPaw(p.x, p.y, p.size, p.color, p.rotation);
+        else drawDot(p.x, p.y, p.size, p.color);
+      }
+    });
+    active = active.filter(p => p.opacity > 0 && p.y < canvas.offsetHeight);
+    ctx.globalAlpha = 1;
+    if (active.length > 0) requestAnimationFrame(animate);
+  }
+  animate();
+}
+
+// Re-calibrate badge on resize so it stays perfect across breakpoints
+if (typeof window !== 'undefined' && typeof window.addEventListener === 'function') {
+  window.addEventListener('resize', () => {
+    if (document.querySelector('#byobBadgeText')) calibrateBadge();
+  });
+}
+
+function restartAudit() {
+  state = {
+    currentQ: 0,
+    answers: { q1: null, q2: null, q3: [], q4: null, q5: [], q6: [] }
+  };
+  document.getElementById('screen-result').classList.remove('active');
+  document.getElementById('screen-question').classList.remove('active');
+  document.getElementById('screen-intro').classList.add('active');
+  scrollTop();
+}
+
+/* ============== PDF (jsPDF native text rendering, V5 visual language) ============== */
+function downloadPDF() {
+  // Defensive: check jsPDF actually loaded
+  if (!window.jspdf || !window.jspdf.jsPDF) {
+    showToast('PDF library failed to load. Check connection and refresh.');
+    return;
+  }
+  showToast('Generating your PDF...');
+  setTimeout(() => {
+    try {
+      buildPDF();
+      showToast('PDF downloaded');
+    } catch (err) {
+      console.error('PDF generation error:', err);
+      showToast('Error: ' + (err.message || 'unknown').slice(0, 60));
+    }
+  }, 50);
+}
+
+function buildPDF() {
+  const { jsPDF } = window.jspdf;
+  const archetype = determineArchetype();
+  const arch = ARCHETYPES[archetype];
+  const archName = arch.name;
+
+  const PAGE_W = 210;
+  const PAGE_H = 297;
+  const MARGIN_X = 22;
+  const MARGIN_TOP = 22;
+  const MARGIN_BOTTOM = 22;
+  const CONTENT_W = PAGE_W - (MARGIN_X * 2);
+
+  const doc = new jsPDF({ unit: 'mm', format: 'a4', orientation: 'portrait' });
+
+  // Brand colours (RGB) — V5 palette
+  const C = {
+    ink: [26, 26, 18],
+    inkSoft: [47, 46, 34],
+    body: [74, 72, 58],
+    mid: [128, 125, 110],
+    light: [181, 177, 160],
+    border: [226, 220, 201],
+    bgCard: [252, 248, 238],
+    bgInset: [240, 234, 217],
+    gold: [184, 137, 58],
+    goldDk: [122, 90, 32],
+    goldPale: [244, 232, 201],
+    green: [63, 90, 61],
+    greenDk: [36, 53, 32],
+    greenPale: [224, 229, 220],
+    greenPaleSoft: [237, 240, 232],
+    violet: [236, 229, 240],
+    violetText: [92, 79, 140],
+    plum: [107, 43, 61],
+    white: [255, 255, 255]
+  };
+
+  let y = MARGIN_TOP;
+  let pageNum = 1;
+
+  function setColor(rgb) { doc.setTextColor(rgb[0], rgb[1], rgb[2]); }
+  function setFill(rgb) { doc.setFillColor(rgb[0], rgb[1], rgb[2]); }
+  function setDraw(rgb) { doc.setDrawColor(rgb[0], rgb[1], rgb[2]); }
+
+  function pageBreakIfNeeded(neededHeight) {
+    if (y + neededHeight > PAGE_H - MARGIN_BOTTOM) {
+      addFooter();
+      doc.addPage();
+      pageNum++;
+      // On pages 2+, leave room for the header divider line at MARGIN_TOP - 5
+      // and give content a comfortable gap below it
+      y = MARGIN_TOP + 6;
+      addPageHeader();
+    }
+  }
+
+  function addPageHeader() {
+    if (pageNum === 1) return;
+    doc.setFont('times', 'italic');
+    doc.setFontSize(11);
+    setColor(C.mid);
+    doc.text('The AI Confidence Audit', MARGIN_X, MARGIN_TOP - 8);
+    doc.setFont('helvetica', 'normal');
+    doc.setFontSize(8);
+    setColor(C.light);
+    doc.text(archName, PAGE_W - MARGIN_X, MARGIN_TOP - 8, { align: 'right' });
+    setDraw(C.border);
+    doc.setLineWidth(0.2);
+    doc.line(MARGIN_X, MARGIN_TOP - 5, PAGE_W - MARGIN_X, MARGIN_TOP - 5);
+  }
+
+  function addFooter() {
+    setColor(C.light);
+    doc.setFont('helvetica', 'normal');
+    doc.setFontSize(8);
+    doc.text('dannybunny.co/byob', MARGIN_X, PAGE_H - 10);
+    doc.text(`${pageNum}`, PAGE_W - MARGIN_X, PAGE_H - 10, { align: 'right' });
+  }
+
+  function htmlToText(html) {
+    return html
+      .replace(/<em[^>]*>/gi, '{{em}}')
+      .replace(/<\/em>/gi, '{{/em}}')
+      .replace(/<strong[^>]*>/gi, '{{em}}')
+      .replace(/<\/strong>/gi, '{{/em}}')
+      .replace(/<br\s*\/?>/gi, '\n')
+      .replace(/<\/p>/gi, '\n\n')
+      .replace(/<p[^>]*>/gi, '')
+      .replace(/<ul[^>]*>/gi, '\n')
+      .replace(/<\/ul>/gi, '\n')
+      .replace(/<li[^>]*>/gi, '  · ')
+      .replace(/<\/li>/gi, '\n')
+      .replace(/<[^>]+>/g, '')
+      .replace(/&amp;/g, '&').replace(/&lt;/g, '<').replace(/&gt;/g, '>')
+      .replace(/&quot;/g, '"').replace(/&#39;/g, "'").replace(/&nbsp;/g, ' ')
+      .replace(/💩/g, 'sh*t')
+      .replace(/🐾/g, '')
+      .replace(/\n{3,}/g, '\n\n')
+      .trim();
+  }
+
+  function drawParagraph(text, opts = {}) {
+    const fontFamily = opts.fontFamily || 'times';
+    const fontSize = opts.fontSize || 11;
+    const lineHeight = opts.lineHeight || 1.55;
+    const color = opts.color || C.body;
+    const indent = opts.indent || 0;
+    const startX = MARGIN_X + indent;
+    const maxWidth = (opts.maxWidth || CONTENT_W) - indent;
+
+    setColor(color);
+    doc.setFontSize(fontSize);
+
+    const segments = [];
+    let remaining = text;
+    let isItalic = false;
+    while (remaining.length > 0) {
+      const idx = remaining.indexOf(isItalic ? '{{/em}}' : '{{em}}');
+      if (idx === -1) {
+        segments.push({ text: remaining, italic: isItalic });
+        break;
+      }
+      if (idx > 0) segments.push({ text: remaining.slice(0, idx), italic: isItalic });
+      remaining = remaining.slice(idx + (isItalic ? 7 : 6));
+      isItalic = !isItalic;
+    }
+
+    const words = [];
+    segments.forEach(seg => {
+      const parts = seg.text.split(/(\s+)/);
+      parts.forEach(p => {
+        if (p.length > 0) words.push({ text: p, italic: seg.italic });
+      });
+    });
+
+    const lineH = fontSize * 0.3528 * lineHeight;
+    let lineWords = [];
+    let lineWidth = 0;
+
+    function flushLine() {
+      if (lineWords.length === 0) return;
+      pageBreakIfNeeded(lineH);
+      // Re-apply paragraph styling after potential page break (addPageHeader
+      // changes font/size/color and we need to reset before drawing this line)
+      setColor(color);
+      doc.setFontSize(fontSize);
+      let cursorX = startX;
+      lineWords.forEach(w => {
+        doc.setFont(fontFamily, w.italic ? 'italic' : 'normal');
+        doc.text(w.text, cursorX, y);
+        cursorX += doc.getTextWidth(w.text);
+      });
+      y += lineH;
+      lineWords = [];
+      lineWidth = 0;
+    }
+
+    words.forEach(w => {
+      if (w.text === '\n' || w.text.includes('\n')) {
+        const lineParts = w.text.split('\n');
+        lineParts.forEach((part, i) => {
+          if (i > 0) flushLine();
+          if (part.length > 0) {
+            doc.setFont(fontFamily, w.italic ? 'italic' : 'normal');
+            const partW = doc.getTextWidth(part);
+            if (lineWidth + partW > maxWidth && lineWords.length > 0) flushLine();
+            lineWords.push({ text: part, italic: w.italic });
+            lineWidth += partW;
+          }
+        });
+        return;
+      }
+      doc.setFont(fontFamily, w.italic ? 'italic' : 'normal');
+      const wW = doc.getTextWidth(w.text);
+      if (lineWords.length === 0 && /^\s+$/.test(w.text)) return;
+      if (lineWidth + wW > maxWidth && !/^\s+$/.test(w.text)) {
+        flushLine();
+        if (/^\s+$/.test(w.text)) return;
+      }
+      lineWords.push({ text: w.text, italic: w.italic });
+      lineWidth += wW;
+    });
+    flushLine();
+  }
+
+  function drawPill(text, opts = {}) {
+    const bgColor = opts.bgColor || C.greenPale;
+    const textColor = opts.textColor || C.greenDk;
+    const align = opts.align || 'center';
+    const trailingSpace = opts.trailingSpace !== undefined ? opts.trailingSpace : 6;
+
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(7.5);
+    const spaced = text.toUpperCase().split('').join(' ');
+    const textW = doc.getTextWidth(spaced);
+    const pillW = textW + 14;
+    const pillH = 7;
+
+    pageBreakIfNeeded(pillH + 4);
+
+    let pillX;
+    if (align === 'center') pillX = (PAGE_W - pillW) / 2;
+    else pillX = MARGIN_X;
+
+    setFill(bgColor);
+    doc.roundedRect(pillX, y, pillW, pillH, pillH/2, pillH/2, 'F');
+    setColor(textColor);
+    doc.text(spaced, pillX + pillW/2, y + 4.8, { align: 'center' });
+    y += pillH + trailingSpace;
+  }
+
+  function drawDecoDivider() {
+    pageBreakIfNeeded(12);
+    y += 4;
+    setDraw(C.border);
+    doc.setLineWidth(0.3);
+    const lineLen = 22;
+    const cx = PAGE_W / 2;
+    doc.line(cx - 32, y, cx - 32 + lineLen, y);
+    doc.line(cx + 32 - lineLen, y, cx + 32, y);
+    setColor(C.gold);
+    doc.setFont('helvetica', 'normal');
+    doc.setFontSize(8);
+    doc.text('· · ·', cx, y + 1, { align: 'center' });
+    y += 12;
+  }
+
+  function drawHeroHeading(textLead, textAccent, accentColor) {
+    accentColor = accentColor || C.green;
+    const fontSize = 30;
+    pageBreakIfNeeded(fontSize * 0.7);
+
+    doc.setFontSize(fontSize);
+    doc.setFont('times', 'normal');
+    const leadW = doc.getTextWidth(textLead);
+    doc.setFont('times', 'italic');
+    const accentW = doc.getTextWidth(textAccent);
+    const totalW = leadW + accentW;
+    let cursorX = (PAGE_W - totalW) / 2;
+
+    setColor(C.ink);
+    doc.setFont('times', 'normal');
+    doc.text(textLead, cursorX, y);
+    cursorX += leadW;
+    setColor(accentColor);
+    doc.setFont('times', 'italic');
+    doc.text(textAccent, cursorX, y);
+    y += fontSize * 0.6;
+  }
+
+  function drawSectionHeading(eyebrow, titleLead, titleAccent, accentColor) {
+    accentColor = accentColor || C.green;
+    const fontSize = 22;
+    const pillH = 7;
+    const pillTrailing = 8;
+    const titleReservedH = fontSize * 0.7;
+    const subSpace = 8; // approximate subtitle height that follows
+    // Reserve enough space to keep pill + title + subtitle together
+    pageBreakIfNeeded(pillH + pillTrailing + titleReservedH + subSpace + 8);
+
+    drawPill(eyebrow, { bgColor: C.bgInset, textColor: C.mid, align: 'left', trailingSpace: pillTrailing });
+
+    doc.setFontSize(fontSize);
+    doc.setFont('times', 'normal');
+    const leadW = doc.getTextWidth(titleLead);
+    setColor(C.ink);
+    doc.text(titleLead, MARGIN_X, y);
+    setColor(accentColor);
+    doc.setFont('times', 'italic');
+    doc.text(titleAccent, MARGIN_X + leadW, y);
+    y += fontSize * 0.5 + 4;
+  }
+
+  function drawSectionSub(text) {
+    pageBreakIfNeeded(8);
+    setColor(C.mid);
+    doc.setFont('times', 'italic');
+    doc.setFontSize(11);
+    const lines = doc.splitTextToSize(text, CONTENT_W);
+    lines.forEach(line => {
+      doc.text(line, MARGIN_X, y);
+      y += 5;
+    });
+    y += 4;
+  }
+
+  function drawCalloutBox(text, opts = {}) {
+    const bgColor = opts.bgColor || C.bgCard;
+    const accentColor = opts.accentColor || C.gold;
+    const padding = 5;
+    const labelText = opts.label || null;
+    const fontSize = opts.fontSize || 11;
+    const italic = opts.italic || false;
+
+    doc.setFont('times', italic ? 'italic' : 'normal');
+    doc.setFontSize(fontSize);
+    const innerW = CONTENT_W - (padding * 2);
+
+    // Pre-measure by running the actual paragraph layout with rendering disabled.
+    // This gives us the EXACT final height, including correct handling of
+    // paragraph breaks (which splitTextToSize would over-count).
+    const measuredH = _measureParagraph(text, fontSize, padding + 2, innerW);
+
+    const lineH = fontSize * 0.3528 * 1.55;
+    const labelH = labelText ? 8 : 0;
+    const fullContentH = labelH + measuredH;
+    const fullBoxH = fullContentH + (padding * 2) + 2;
+
+    const availableH = (PAGE_H - MARGIN_BOTTOM) - y;
+
+    if (fullBoxH <= availableH || measuredH > (PAGE_H - MARGIN_TOP - MARGIN_BOTTOM - 40)) {
+      // Fits on one page, OR is taller than a full page (in which case we let it
+      // page-break naturally inside the rich drawParagraph rendering)
+      _drawCalloutSegmentRich(text, opts, fullBoxH);
+    } else {
+      // Doesn't fit on this page but DOES fit on the next: just page-break first
+      pageBreakIfNeeded(fullBoxH + 4);
+      _drawCalloutSegmentRich(text, opts, fullBoxH);
+    }
+  }
+
+  // Dry-run measurement: compute final height of a paragraph as if drawParagraph
+  // rendered it, but without actually drawing anything.
+  function _measureParagraph(text, fontSize, indent, maxWidthOverride) {
+    doc.setFontSize(fontSize);
+    const startX = MARGIN_X + indent;
+    const maxWidth = (maxWidthOverride !== undefined ? maxWidthOverride : CONTENT_W) - 0;
+
+    const segments = [];
+    let remaining = text;
+    let isItalic = false;
+    while (remaining.length > 0) {
+      const idx = remaining.indexOf(isItalic ? '{{/em}}' : '{{em}}');
+      if (idx === -1) {
+        segments.push({ text: remaining, italic: isItalic });
+        break;
+      }
+      if (idx > 0) segments.push({ text: remaining.slice(0, idx), italic: isItalic });
+      remaining = remaining.slice(idx + (isItalic ? 7 : 6));
+      isItalic = !isItalic;
+    }
+
+    const words = [];
+    segments.forEach(seg => {
+      const parts = seg.text.split(/(\s+)/);
+      parts.forEach(p => { if (p.length > 0) words.push({ text: p, italic: seg.italic }); });
+    });
+
+    const lineH = fontSize * 0.3528 * 1.55;
+    let lineWords = [];
+    let lineWidth = 0;
+    let totalLines = 0;
+
+    function flushLine() {
+      if (lineWords.length === 0) return;
+      totalLines++;
+      lineWords = [];
+      lineWidth = 0;
+    }
+
+    words.forEach(w => {
+      if (w.text === '\n' || w.text.includes('\n')) {
+        const lineParts = w.text.split('\n');
+        lineParts.forEach((part, i) => {
+          if (i > 0) flushLine();
+          if (part.length > 0) {
+            doc.setFont('times', w.italic ? 'italic' : 'normal');
+            const partW = doc.getTextWidth(part);
+            if (lineWidth + partW > maxWidth && lineWords.length > 0) flushLine();
+            lineWords.push({ text: part, italic: w.italic });
+            lineWidth += partW;
+          }
+        });
+        return;
+      }
+      doc.setFont('times', w.italic ? 'italic' : 'normal');
+      const wW = doc.getTextWidth(w.text);
+      if (lineWords.length === 0 && /^\s+$/.test(w.text)) return;
+      if (lineWidth + wW > maxWidth && !/^\s+$/.test(w.text)) {
+        flushLine();
+        if (/^\s+$/.test(w.text)) return;
+      }
+      lineWords.push({ text: w.text, italic: w.italic });
+      lineWidth += wW;
+    });
+    flushLine();
+
+    return totalLines * lineH;
+  }
+
+  // Draw a single callout box with rich (italic-preserving) text rendering
+  function _drawCalloutSegmentRich(text, opts, boxH) {
+    const bgColor = opts.bgColor || C.bgCard;
+    const accentColor = opts.accentColor || C.gold;
+    const padding = 5;
+    const labelText = opts.label || null;
+    const fontSize = opts.fontSize || 11;
+
+    setFill(bgColor);
+    doc.roundedRect(MARGIN_X, y, CONTENT_W, boxH, 2, 2, 'F');
+    if (opts.leftBorder) {
+      setFill(accentColor);
+      doc.rect(MARGIN_X, y, 1, boxH, 'F');
+    }
+
+    let innerY = y + padding + 4;
+    if (labelText) {
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(7);
+      const spacedLabel = labelText.toUpperCase().split('').join(' ');
+      const labelW = doc.getTextWidth(spacedLabel);
+      const labelPillW = labelW + 8;
+      const labelPillH = 5;
+      setFill(opts.labelBg || C.greenPale);
+      doc.roundedRect(MARGIN_X + padding + 2, innerY - 3.5, labelPillW, labelPillH, labelPillH/2, labelPillH/2, 'F');
+      setColor(opts.labelColor || C.greenDk);
+      doc.text(spacedLabel, MARGIN_X + padding + 2 + labelPillW/2, innerY, { align: 'center' });
+      innerY += 7;
+    }
+
+    const savedY = y;
+    y = innerY;
+    drawParagraph(text, {
+      fontFamily: 'times',
+      fontSize: fontSize,
+      color: opts.textColor || C.inkSoft,
+      indent: padding + 2,
+      lineHeight: 1.55
+    });
+    y = savedY + boxH + 6;
+  }
+
+  function drawShiftCard(label, htmlBody, isLines) {
+    const cleanBody = htmlToText(htmlBody);
+    drawCalloutBox(cleanBody, {
+      label: label,
+      bgColor: C.bgCard,
+      labelBg: isLines ? C.goldPale : C.greenPale,
+      labelColor: isLines ? C.goldDk : C.greenDk,
+      fontSize: 10.5,
+      textColor: C.inkSoft
+    });
+  }
+
+  function drawLinesSummary(text) {
+    drawCalloutBox(text, {
+      label: 'You drew lines around',
+      bgColor: C.violet,
+      labelBg: [231, 224, 240],
+      labelColor: C.violetText,
+      fontSize: 11,
+      italic: true,
+      textColor: C.ink
+    });
+  }
+
+  function drawStatsList(items) {
+    const fontSize = 11;
+    const lineHeight = 1.55;
+    const indent = 10;
+    const lineH = fontSize * 0.3528 * lineHeight;
+    // Equal breathing room above and below each separator line
+    const padAroundSep = 5;
+
+    items.forEach((item, idx) => {
+      // Measure how tall this item will be
+      const itemH = _measureParagraph(item, fontSize, indent, CONTENT_W - indent);
+
+      // Check we have room for: bullet dot + the wrapped text + separator gap
+      pageBreakIfNeeded(itemH + padAroundSep * 2 + 4);
+
+      // Draw the gold dot bullet
+      const bulletY = y + lineH - 3.2;
+      setFill(C.gold);
+      doc.circle(MARGIN_X + 3, bulletY, 1.2, 'F');
+
+      // Draw the text body with rich italics preserved
+      drawParagraph(item, {
+        fontFamily: 'times',
+        fontSize: fontSize,
+        color: C.inkSoft,
+        indent: indent,
+        lineHeight: lineHeight
+      });
+
+      // After drawParagraph, y has overshot by ~one line-height (because flushLine
+      // advances y *after* drawing the last line). Pull it back further so the
+      // separator line truly sits at the visual midpoint between two bullets.
+      y -= lineH * 0.85;
+
+      // Add a thin separator line with equal breathing room above and below,
+      // except after the last item
+      if (idx < items.length - 1) {
+        y += padAroundSep + 2;
+        setDraw(C.border);
+        doc.setLineWidth(0.2);
+        doc.line(MARGIN_X + indent, y, PAGE_W - MARGIN_X, y);
+        y += padAroundSep + 2;
+      } else {
+        // For the last item, restore a small trailing space
+        y += padAroundSep + 2;
+      }
+    });
+  }
+
+  function drawCTAButton(label, url) {
+    pageBreakIfNeeded(20);
+    y += 4;
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(9);
+    const spacedLabel = label.toUpperCase().split('').join(' ');
+    const textW = doc.getTextWidth(spacedLabel);
+    const btnW = textW + 30;
+    const btnH = 12;
+    const btnX = (PAGE_W - btnW) / 2;
+    setFill(C.green);
+    doc.roundedRect(btnX, y, btnW, btnH, btnH/2, btnH/2, 'F');
+    setColor(C.white);
+    doc.text(spacedLabel, PAGE_W / 2, y + 7.8, { align: 'center' });
+    doc.link(btnX, y, btnW, btnH, { url: url });
+    y += btnH + 6;
+    setColor(C.mid);
+    doc.setFont('times', 'italic');
+    doc.setFontSize(9);
+    doc.text(url.replace('https://', ''), PAGE_W / 2, y, { align: 'center' });
+    y += 10;
+  }
+
+  // ===== PAGE 1 HERO =====
+  // Logo
+  doc.setFont('times', 'normal');
+  doc.setFontSize(14);
+  const dannyW = doc.getTextWidth('DannyBunny');
+  const coW = doc.getTextWidth('.co');
+  const totalLogoW = dannyW + coW;
+  const logoX = (PAGE_W - totalLogoW) / 2;
+  setColor(C.ink);
+  doc.text('DannyBunny', logoX, MARGIN_TOP + 4);
+  setColor(C.gold);
+  doc.text('.co', logoX + dannyW, MARGIN_TOP + 4);
+
+  doc.setFont('helvetica', 'bold');
+  doc.setFontSize(7);
+  setColor(C.mid);
+  const tagline = 'THE AI CONFIDENCE AUDIT'.split('').join(' ');
+  doc.text(tagline, PAGE_W / 2, MARGIN_TOP + 11, { align: 'center' });
+
+  setDraw(C.border);
+  doc.setLineWidth(0.3);
+  doc.line(MARGIN_X, MARGIN_TOP + 16, PAGE_W - MARGIN_X, MARGIN_TOP + 16);
+
+  y = MARGIN_TOP + 32;
+
+  // Your Result pill
+  drawPill('Your Result', { bgColor: C.greenPale, textColor: C.greenDk, trailingSpace: 12 });
+
+  // Archetype heading
+  drawHeroHeading(arch.nameLead, arch.nameAccent, C.green);
+
+  // Sub
+  y += 4;
+  setColor(C.mid);
+  doc.setFont('times', 'italic');
+  doc.setFontSize(11);
+  doc.text('A snapshot of where you are with AI right now.', PAGE_W / 2, y, { align: 'center' });
+  y += 5;
+  doc.text('Honest, generous, and yours to keep.', PAGE_W / 2, y, { align: 'center' });
+  y += 4;
+
+  drawDecoDivider();
+
+  // Opening paragraphs
+  const paragraphs = arch.opening.split(/<\/p>/i)
+    .map(s => s.replace(/<p[^>]*>/i, '').trim())
+    .filter(s => s.length > 0);
+  paragraphs.forEach(p => {
+    drawParagraph(htmlToText(p), { fontFamily: 'times', fontSize: 11, color: C.body, lineHeight: 1.6 });
+    y += 3;
+  });
+
+  // Q2 quote callout (gold-accented)
+  const q2Line = Q2_LINES[archetype][state.answers.q2];
+  const q2Context = Q2_CONTEXT[state.answers.q2];
+  if (q2Line) {
+    y += 2;
+    // Small italic context line giving the user's answer back to them
+    if (q2Context) {
+      pageBreakIfNeeded(8);
+      doc.setFont('times', 'italic');
+      doc.setFontSize(9.5);
+      setColor(C.mid);
+      doc.text(q2Context, MARGIN_X, y);
+      y += 6;
+    }
+    drawCalloutBox(htmlToText(q2Line), {
+      bgColor: C.bgCard,
+      accentColor: C.gold,
+      leftBorder: true,
+      fontSize: 11,
+      italic: true,
+      textColor: C.inkSoft
+    });
+  }
+
+  // Depth nod (sage inset)
+  const q3Score = (state.answers.q3 || []).filter(id => id !== 'none').length;
+  if (q3Score >= 3) {
+    drawCalloutBox(htmlToText(DEPTH_NODS[archetype]), {
+      label: 'A note on your depth',
+      labelBg: C.greenPale,
+      labelColor: C.greenDk,
+      bgColor: C.greenPaleSoft,
+      accentColor: C.green,
+      leftBorder: true,
+      fontSize: 10.5,
+      textColor: C.inkSoft
+    });
+  }
+
+  // ===== SECTION TWO: YOUR ONE SHIFT =====
+  const q5 = state.answers.q5 || [];
+  if (q5.length > 0) {
+    drawDecoDivider();
+    drawSectionHeading('Section Two', 'Your One ', 'Shift', C.green);
+    drawSectionSub("You told me what's draining you. Here's the smallest, truest move I'd suggest.");
+
+    q5.forEach(id => {
+      const shift = SHIFTS[archetype][id];
+      if (shift) drawShiftCard(shift.label, shift.body, false);
+    });
+  }
+
+  // ===== SECTION THREE: SOVEREIGN LINES =====
+  const q6 = state.answers.q6 || [];
+  if (q6.length > 0) {
+    drawDecoDivider();
+
+    // Check upfront: can the section heading + violet summary + first shift card
+    // all fit together on this page? If not, page-break before drawing anything.
+    const summaryText = q6.map(id => LINES_LABELS[id]).join('  ·  ');
+    const firstBlock = q6.map(id => LINES_BLOCKS[id]).find(b => b);
+    if (firstBlock) {
+      const sectionHeadingH = 7 + 12 + 30 * 0.7 + 8 + 16; // pill+heading+subtitle
+      const summaryEstH = 22; // violet summary box
+      const firstCardText = htmlToText(firstBlock.body);
+      const firstCardH = _measureParagraph(firstCardText, 10.5, 7, CONTENT_W - 14) + 25;
+      const togetherH = sectionHeadingH + summaryEstH + firstCardH + 12;
+      pageBreakIfNeeded(togetherH);
+    }
+
+    drawSectionHeading('Section Three', 'Your Sovereign ', 'Lines', C.gold);
+    drawSectionSub("You told me where AI doesn't belong in your work. Let me reflect that back to you.");
+
+    drawLinesSummary(summaryText);
+
+    q6.forEach(id => {
+      const block = LINES_BLOCKS[id];
+      if (block) drawShiftCard(block.label, block.body, true);
+    });
+
+    y += 2;
+    drawParagraph(
+      'The lines you drew (or chose not to) are yours. Nobody else\'s lines are going to fit your work, your voice, or your values. The fact that you\'ve thought about this {{em}}at all{{/em}} puts you ahead of most of the AI conversation, which is currently busy arguing about productivity while skipping the question of {{em}}what\'s worth being productive about{{/em}}.',
+      { fontFamily: 'times', fontSize: 11, color: C.body, lineHeight: 1.6 }
+    );
+  }
+
+  // ===== CLOSING =====
+  drawDecoDivider();
+  // Reserve combined space for pill + hero heading so they stay together
+  pageBreakIfNeeded(7 + 12 + 30 * 0.7 + 8);
+  drawPill('A Note Before You Go', { bgColor: C.goldPale, textColor: C.goldDk, trailingSpace: 12 });
+  drawHeroHeading('The next ', 'room', C.green);
+  y += 4;
+
+  // Opening of the closing
+  const closingParasIntro = [
+    'The Audit was a snapshot. The bigger work is what happens {{em}}after{{/em}}.',
+    'Look at what\'s actually happening.'
+  ];
+  closingParasIntro.forEach(p => {
+    drawParagraph(p, { fontFamily: 'times', fontSize: 11, color: C.body, lineHeight: 1.6 });
+    y += 2;
+  });
+
+  // Stats bullets (the bad news)
+  const statsBullets = [
+    'Over {{em}}244,000 tech jobs{{/em}} were eliminated globally in 2025. Q1 2026 alone added another {{em}}80,000{{/em}} worldwide, with analysts projecting a full-year figure that exceeds last year.',
+    'The CEOs of Anthropic and Ford have both publicly said AI will wipe out {{em}}half of all entry-level white-collar jobs{{/em}}.',
+    'It\'s not just the US. Asia is feeling it too. India and Singapore lead Asia-Pacific tech layoffs in 2026, with companies like {{em}}Alibaba, Baidu, and BYD{{/em}} all cutting workforce, and Singapore-based firms increasingly citing AI and automation as the driver.',
+    'Block, Amazon, Oracle, Accenture, Salesforce, HP have all directly cited AI as the reason for cutting tens of thousands of roles, often without warning.',
+    'Anything purely task-based, writing, design, marketing, customer support, admin, is being absorbed by AI faster than companies are willing to say out loud.'
+  ];
+  y += 2;
+  drawStatsList(statsBullets);
+  y += 4;
+
+  // Bridge paragraphs into the good news
+  const bridgeParas = [
+    'That\'s not fear-mongering. That\'s just where we are.',
+    '{{em}}And here\'s the other half of the picture, which almost nobody is putting next to that one.{{/em}}',
+    'While the old jobs are being absorbed, an entirely new economy is being built underneath them.'
+  ];
+  bridgeParas.forEach(p => {
+    drawParagraph(p, { fontFamily: 'times', fontSize: 11, color: C.body, lineHeight: 1.6 });
+    y += 2;
+  });
+
+  // Good news bullets
+  const goodNewsBullets = [
+    'There are now an estimated {{em}}1.57 billion freelancers and independent workers worldwide{{/em}}, around {{em}}47% of the global workforce{{/em}}.',
+    'The global creator economy has crossed {{em}}$250 billion{{/em}}, with {{em}}over 200 million people identifying as creators{{/em}} globally. Asia-Pacific is the second-largest and one of the fastest-growing regions.',
+    'On LinkedIn, the number of people adding {{em}}"founder"{{/em}} to their profile grew {{em}}69% year on year{{/em}}. Forty-seven percent said {{em}}AI made them more likely to start a business{{/em}}.',
+    'Singapore alone has climbed to {{em}}#4 globally in the startup ecosystem index{{/em}}, with over {{em}}4,500 active startups{{/em}}, and Southeast Asia is forecast to grow faster than the US or Europe through 2026.',
+    'One person can now run what used to take a small team. Examples like {{em}}Base44{{/em}} (sold to Wix for {{em}}$80 million{{/em}} within six months of launch) and {{em}}HeadshotPro{{/em}} (one founder, {{em}}$3.6 million annual recurring revenue{{/em}}) are previews, not flukes.'
+  ];
+  y += 2;
+  drawStatsList(goodNewsBullets);
+  y += 4;
+
+  // Closing prose
+  const closingParasOutro = [
+    'We are moving from a white-collar economy into a {{em}}no-collar{{/em}} economy. Job titles are dissolving. Career ladders are dissolving. What\'s emerging instead is a world where anyone with the right expertise, the right judgement, and the right command of AI as leverage can make a living from a laptop. From anywhere. With or without a boss above them.',
+    'The people who thrive in this shift won\'t be the ones with the safest jobs. They\'ll be the ones with {{em}}options{{/em}}. Multiple income streams. Something built on the side. A skill stack that no employer can take away because it doesn\'t belong to an employer in the first place.',
+    'That stance is what I call being {{em}}your own boss{{/em}}. It\'s not a job title. It\'s a way of operating. Whether you\'re employed, self-employed, or somewhere in between, the question is the same. {{em}}Are you building something that\'s yours?{{/em}}',
+    'That work is what I do inside {{em}}BYOB{{/em}}.',
+    'BYOB is a seven-week live cohort for people who want to build a real business with both impact and integrity, with AI woven through the whole thing. Not as a gimmick. As the actual leverage that lets one person produce more, reach further, and earn more without losing the part of the work that\'s {{em}}yours{{/em}}.',
+    'If the worldview of this Audit resonated, BYOB is the next room.',
+    'The waitlist for Cohort 2 (June 2026) is open. Joining doesn\'t commit you to anything. You\'ll just hear first when doors open, and you\'ll get the Super Early Cat pricing window that\'s only available to waitlist members.'
+  ];
+  closingParasOutro.forEach(p => {
+    drawParagraph(p, { fontFamily: 'times', fontSize: 11, color: C.body, lineHeight: 1.6 });
+    y += 2;
+  });
+
+  drawCTAButton('Join the BYOB Waitlist', 'https://dannybunny.co/byob');
+
+  // Blessing
+  pageBreakIfNeeded(40);
+  y += 8;
+  setDraw(C.border);
+  doc.setLineWidth(0.2);
+  doc.line(MARGIN_X + 30, y, PAGE_W - MARGIN_X - 30, y);
+  y += 10;
+
+  doc.setFont('times', 'italic');
+  doc.setFontSize(12);
+  setColor(C.inkSoft);
+  const blessing = 'Whatever you do from here, whether our paths cross again inside BYOB or not, keep building. Keep dreaming. Keep expanding. Keep getting your paws dirty.';
+  const blessingLines = doc.splitTextToSize(blessing, CONTENT_W - 30);
+  blessingLines.forEach(line => {
+    doc.text(line, PAGE_W / 2, y, { align: 'center' });
+    y += 6;
+  });
+
+  y += 6;
+  doc.setFont('times', 'italic');
+  doc.setFontSize(11);
+  setColor(C.green);
+  doc.text('— Dan', PAGE_W / 2, y, { align: 'center' });
+
+  addFooter();
+
+  const filename = `AI-Confidence-Audit-${archName.replace(/\s+/g, '-')}.pdf`;
+  doc.save(filename);
+}
+
+/* ============== UTILS ============== */
+function showToast(msg) {
+  const toast = document.getElementById('toast');
+  toast.textContent = msg;
+  toast.classList.add('show');
+  setTimeout(() => toast.classList.remove('show'), 2500);
+}
+
+function scrollTop() {
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+</script>
+
+</body>
+</html>
