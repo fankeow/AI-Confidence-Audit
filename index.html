@@ -5,45 +5,45 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>The AI Confidence Audit — DannyBunny</title>
 <meta name="description" content="A 4-minute diagnostic for the AI-curious, the AI-cautious, and the AI-chaotic. Find your archetype and your one shift.">
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,300;1,9..144,400;1,9..144,500;1,9..144,600&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Albert+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,500&family=Bowlby+One&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
   :root {
     /* Background tones */
-    --bg: #F7F2E8;
-    --bg-soft: #EFE8D6;
-    --bg-card: #FCF8EE;
-    --bg-inset: #F0EAD9;
-    --bg-violet: #ECE5F0;
-    --bg-dark: #1A1A12;
+    --bg: #fffaf3;
+    --bg-soft: #fde3e1;
+    --bg-card: #ffffff;
+    --bg-inset: #f3eee6;
+    --bg-violet: #ece6f7;
+    --bg-dark: #1f1a24;
 
     /* Text */
-    --ink: #1A1A12;
-    --ink-soft: #2F2E22;
-    --body: #4A483A;
-    --mid: #807D6E;
-    --light: #B5B1A0;
+    --ink: #1f1a24;
+    --ink-soft: #2f2838;
+    --body: #3d3645;
+    --mid: #6b6373;
+    --light: #b3aab8;
 
     /* Borders */
-    --border: #E2DCC9;
-    --border-strong: #C8C2AD;
+    --border: #e8e1da;
+    --border-strong: #cfc5bb;
 
     /* Brand: gold + sage green */
-    --gold: #B8893A;
-    --gold-mid: #A87A2C;
-    --gold-dk: #7A5A20;
-    --gold-pale: #F4E8C9;
-    --gold-pale-soft: #FAF1D9;
+    --gold: #f15a47;
+    --gold-mid: #d84a37;
+    --gold-dk: #b0311e;
+    --gold-pale: #fde3e1;
+    --gold-pale-soft: #fff1ef;
 
-    --green: #3F5A3D;
-    --green-mid: #344A33;
-    --green-dk: #243520;
-    --green-pale: #E0E5DC;
-    --green-pale-soft: #EDF0E8;
+    --green: #0a6fd1;
+    --green-mid: #085bb0;
+    --green-dk: #06447f;
+    --green-pale: #dcebfb;
+    --green-pale-soft: #eef5fd;
 
-    --plum: #6B2B3D;
+    --plum: #b0311e;
 
     --shadow-card: 0 1px 3px rgba(26,26,18,0.04), 0 1px 0 rgba(26,26,18,0.02);
     --shadow-lift: 0 1px 2px rgba(26,26,18,0.04), 0 8px 32px rgba(26,26,18,0.08);
@@ -1019,6 +1019,63 @@
     .q-nav .btn { width: 100%; }
     .deco-divider .line { flex: 0 0 40px; }
   }
+
+  /* ===================== 2026-11 NEW LOOK (Claude Cheat Codes family) ===================== */
+  :root{--display:'Bowlby One',sans-serif;--script:'Instrument Serif',serif;--sans:'Albert Sans',sans-serif;--lines:linear-gradient(#f4d3cf 1px,transparent 1px) 0 0/100% 32px,linear-gradient(90deg,#f8e2df 1px,transparent 1px) 0 0/32px 100%;--b:2.5px solid var(--ink)}
+  body{font-family:var(--sans);font-weight:500;background:var(--lines),var(--bg)}
+  .top-bar{background:#fff;border-bottom:var(--b);padding:14px 28px}
+  .top-logo{font-family:var(--display);font-weight:400;font-size:18px;letter-spacing:1px;text-transform:uppercase}
+  .top-logo span{color:var(--gold-dk)}
+  .pill-vip{background:var(--ink);color:#fff;border:0;font-family:var(--display);font-weight:400;letter-spacing:1.5px}
+  .pill-vip::before{background:#fec82f}
+  .hero-pill{font-family:var(--display);font-weight:400;letter-spacing:1.5px;background:#fec82f;color:var(--ink);border:0}
+  .hero-pill::before{background:var(--ink)}
+  .hero-pill.gold{background:#fec82f;color:var(--ink)}
+  .hero-pill.gold::before{background:var(--ink)}
+  .hero-heading,.section-title,.byob-heading{font-family:var(--display)!important;font-weight:400!important;text-transform:uppercase;letter-spacing:0!important;color:var(--ink);line-height:.9!important}
+  .hero-heading{font-size:clamp(46px,8.5vw,104px)!important}
+  .hero-heading.smaller{font-size:clamp(38px,6.4vw,76px)!important}
+  .section-title{font-size:clamp(34px,5vw,56px)!important}
+  .byob-heading{font-size:clamp(32px,4.6vw,50px)!important}
+  .hero-heading .accent,.section-title .accent,.byob-heading .accent,.hero-heading em,.section-title em,.byob-heading em,.accent-gold,.accent-green{font-family:var(--script)!important;font-style:italic!important;text-transform:none;font-weight:400!important;color:var(--gold-dk)!important;letter-spacing:-.5px}
+  .hero-heading .accent,.section-title .accent,.byob-heading .accent{font-size:1.12em}
+  .hero-meta-text,.progress-count,.q-hint,.q2-quote p,.q2-context,.section-sub,.lines-summary-text,.blessing-text,.blessing-sign,.error-msg{font-family:var(--script)!important;font-style:italic;font-weight:400!important}
+  .hero-meta-text{font-size:24px!important;color:var(--ink)}
+  .q-hint{font-size:19px!important;color:var(--mid)}
+  .progress-count{font-size:19px!important}
+  .section-sub,.lines-summary-text{font-size:21px!important}
+  .blessing-text{font-size:25px!important}
+  .q2-quote p{font-size:23px!important}
+  .q2-quote::before{font-family:var(--script)!important;color:var(--gold)!important}
+  .intro-body p,.option-text,.body-prose,.body-prose p,.depth-nod p,.shift-body p,.shift-body ul li,.lines-closing p,.byob-body p,.byob-body ul.stats-list li{font-family:var(--sans)!important;font-weight:500}
+  .intro-body p{font-size:18px!important;line-height:1.65}
+  .body-prose,.body-prose p{font-size:18px!important;line-height:1.7}
+  .option-text{font-size:16px!important;font-weight:600}
+  .q-title{font-family:var(--sans)!important;font-weight:800!important;font-size:clamp(24px,3.2vw,32px)!important;line-height:1.2!important;letter-spacing:-.3px;color:var(--ink)}
+  .q-eyebrow,.section-eyebrow,.progress-label,.three-up,.shift-label,.lines-summary-tag,.depth-nod-tag,.byob-pill{font-family:var(--display)!important;font-weight:400!important;letter-spacing:1.5px!important}
+  .btn{font-family:var(--display)!important;font-weight:400!important;letter-spacing:1px;text-transform:uppercase;border-radius:40px!important;transition:background .15s,transform .1s,color .15s}
+  .btn-primary{background:var(--ink)!important;color:#fff!important;border:2px solid var(--ink)!important;box-shadow:none!important}
+  .btn-primary:hover{background:var(--gold-dk)!important;border-color:var(--gold-dk)!important}
+  .btn-primary:active,.btn-secondary:active,.btn-ghost:active{transform:scale(.97)}
+  .btn-secondary{background:#fec82f!important;color:var(--ink)!important;border:2px solid var(--ink)!important}
+  .btn-secondary:hover{background:#fff!important}
+  .btn-ghost{color:var(--ink)!important;border:2px solid var(--ink)!important;background:#fff!important}
+  .btn-ghost:hover{background:var(--bg-inset)!important}
+  .progress-bar{height:12px!important;border:2px solid var(--ink);border-radius:20px!important;background:#fff!important}
+  .progress-fill{background:var(--gold)!important;border-radius:20px}
+  .option{border:2px solid var(--ink)!important;border-radius:14px!important;background:#fff!important;box-shadow:none!important;transition:background .15s,transform .1s}
+  .option:hover{background:var(--bg-inset)!important}
+  .option.selected{background:#fec82f!important}
+  .option-marker{border:2px solid var(--ink)!important}
+  .option.selected .option-marker{background:var(--ink)!important;border-color:var(--ink)!important}
+  .shift-card,.depth-nod,.lines-summary,.q2-quote,.byob-cta-wrap,.blessing{border-radius:18px!important;box-shadow:none!important}
+  .shift-card{border:2px solid var(--ink)!important;background:#fff!important}
+  .deco-divider .line{background:var(--ink)!important;height:2px!important}
+  .deco-divider .glyph{color:var(--gold)!important}
+  .toast{font-family:var(--sans);font-weight:700;border-radius:40px!important;background:var(--ink)!important;color:#fff!important}
+  .dbfoot{background:#111;text-align:center;padding:24px 16px;margin-top:40px}
+  .dbfoot a{color:#fff;font-family:var(--sans);font-size:13px;letter-spacing:2px;text-transform:uppercase;text-decoration:none;margin:6px 14px;display:inline-block;font-weight:800;transition:color .2s}
+  .dbfoot a:hover{color:#faed23}
 </style>
 </head>
 <body>
@@ -1109,6 +1166,7 @@
 </div>
 
 <div class="toast" id="toast"></div>
+<div class="dbfoot"><a href="https://dannybunny.co">← DannyBunny.co</a><a href="https://ai.dannybunny.co">Learn AI</a><a href="https://dannybunny.co/work-with-me">Work With Me</a></div>
 
 <script>
 /* ============== QUESTION DATA ============== */
@@ -1662,7 +1720,7 @@ function showResult() {
 }
 
 /* ============== DELIGHT EFFECTS ============== */
-const CONFETTI_COLORS = ['#3F5A3D', '#B8893A', '#6B2B3D', '#E8D9B8', '#8C6628'];
+const CONFETTI_COLORS = ['#f15a47', '#fec82f', '#0a6fd1', '#8fd3b6', '#1f1a24'];
 
 function calibrateBadge() {
   const path = document.querySelector('#byobBadgePath');
@@ -1839,24 +1897,24 @@ function buildPDF() {
 
   // Brand colours (RGB) — V5 palette
   const C = {
-    ink: [26, 26, 18],
-    inkSoft: [47, 46, 34],
-    body: [74, 72, 58],
-    mid: [128, 125, 110],
-    light: [181, 177, 160],
-    border: [226, 220, 201],
-    bgCard: [252, 248, 238],
-    bgInset: [240, 234, 217],
-    gold: [184, 137, 58],
-    goldDk: [122, 90, 32],
-    goldPale: [244, 232, 201],
-    green: [63, 90, 61],
-    greenDk: [36, 53, 32],
-    greenPale: [224, 229, 220],
-    greenPaleSoft: [237, 240, 232],
+    ink: [31, 26, 36],
+    inkSoft: [47, 40, 56],
+    body: [61, 54, 69],
+    mid: [107, 99, 115],
+    light: [179, 170, 184],
+    border: [232, 225, 218],
+    bgCard: [255, 250, 243],
+    bgInset: [243, 238, 230],
+    gold: [176, 49, 30],
+    goldDk: [140, 36, 22],
+    goldPale: [253, 227, 225],
+    green: [176, 49, 30],
+    greenDk: [140, 36, 22],
+    greenPale: [253, 227, 225],
+    greenPaleSoft: [255, 241, 239],
     violet: [236, 229, 240],
     violetText: [92, 79, 140],
-    plum: [107, 43, 61],
+    plum: [176, 49, 30],
     white: [255, 255, 255]
   };
 
